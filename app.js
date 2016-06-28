@@ -2,15 +2,8 @@ var express = require('express')
 var app = express()
 var jsonParser = require('body-parser').json();
 var locu = require('locu');
+var request = require('request');
 
-
-app.get('/', function(req, res) {
-  var mclient = new locu.MenuItemClient('1964ce6a674c2fdc5e1e27567e5add82e755046a');
-  mclient.search({name: 'espresso', locality: 'San Francisco'}, function(result) {
-    console.log(result.objects[0]);
-  });
-  res.send()
-})
 
 app.use(jsonParser);
 
@@ -33,7 +26,43 @@ app.get('/restaurants/:name', function(req, res) {
   res.send()
 })
 
-API CALL FOR BY ID, RETRIEVES VENUE NAME, LOCATION, CONTACT INFO
+var newRestaurants = {id: "5e69999f995c8ad54379"}
+var request = require('request');
+
+app.get('/restaurant/:name', function(req, res) {
+  if(req.params.name == newRestaurants.id) {
+    request({
+        url: 'https://api.locu.com/v2/venue/search',
+        json: {
+          "api_key" : "f165c0e560d0700288c2f70cf6b26e0c2de0348f",
+          "fields" : [ "name", "location", "contact" ],
+          "venue_queries" : [
+            {
+              "locu_id" : newRestaurants.id
+            }
+          ]
+        },
+        method: 'POST' //Specifies method (requirement from API page)
+    }, function(error, response, body){
+        if(error) {
+            console.log(error);
+        } else {
+            console.log(response.statusCode, JSON.stringify(body));
+        }
+    });
+  }
+  res.send()
+
+})
+
+
+
+
+
+
+app.listen(8080);
+
+//API CALL FOR BY ID, RETRIEVES VENUE NAME, LOCATION, CONTACT INFO
 /**
 curl -X POST https://api.locu.com/v2/venue/search -d '{
   "api_key" : "1964ce6a674c2fdc5e1e27567e5add82e755046a",
@@ -44,6 +73,7 @@ curl -X POST https://api.locu.com/v2/venue/search -d '{
     }
   ]
 }'
+
 RETRIEVES ENTIRE MENU
 curl -X POST https://api.locu.com/v2/venue/search -d '{
   "api_key" : "1964ce6a674c2fdc5e1e27567e5add82e755046a",
@@ -55,16 +85,16 @@ curl -X POST https://api.locu.com/v2/venue/search -d '{
   ]
 }'
 
-**/
 
-app.listen(8080);
+
+
 
 // User searches for venue by location
 // If matched, returns container with venue name and location
 // When user clicks, locu id loads entire menu
 
 
-/**
+
 1. User can search restaurants
 2. User can select menu items
 3. User can broadcast a votes.
@@ -76,13 +106,13 @@ app.listen(8080);
 7. User can gain badges/reputation. (Quick responder, accurate, loose cannon)
 
 8. Score menu items based on past votes.
-**/
+
 
 // Call to LOCU http -v get https://api.locu.com/v1_0/venue/search/?api_key=1964ce6a674c2fdc5e1e27567e5add82e755046a
 
 
 // Old Code--Destroy when sure not needed
-/**
+
 app.post('/restaurants', function(req, res) {
   restaurants.forEach(function(restaurant) {
     if(req.body.name == restaurant.name) {

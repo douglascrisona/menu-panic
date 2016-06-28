@@ -1,0 +1,28 @@
+{
+  "name": "menu-panic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/douglascrisona/menu-panic.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/douglascrisona/menu-panic/issues"
+  },
+  "homepage": "https://github.com/douglascrisona/menu-panic#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "locu": "0.0.4",
+    "oauth": "^0.9.14",
+    "request": "^2.72.0",
+    "yelp": "^1.0.1"
+  },
+  "devDependencies": {}
+}
