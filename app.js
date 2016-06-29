@@ -1,7 +1,6 @@
 var express = require('express')
 var app = express()
 var jsonParser = require('body-parser').json();
-var locu = require('locu');
 var request = require('request');
 
 
@@ -10,27 +9,17 @@ app.use(express.static('./'))
 
 
 app.post('/restaurants', function(req, res) {
-  var term = {};
-  term.name = req.body.id;
-  //if(req.body.id == newRestaurants.id) {
-    restaurantSearch(term.name)
-    console.log(term.name)
-  //}
-  res.send()
-
-});
-
-function restaurantSearch(name) {
+  var results = []
   request({
       url: 'https://api.locu.com/v2/venue/search',
       json: {
         "api_key" : "f165c0e560d0700288c2f70cf6b26e0c2de0348f",
-        "fields" : [ "name", "contact"],
+        "fields" : [ "name", "contact", "location", "menus"],
         "venue_queries" : [
           {
-            "name" : name,
+            "name" : req.body.name,
             "location" : {
-              "postal_code" : "92662"
+              "postal_code" : req.body.zip
             }
           }
         ]
@@ -40,14 +29,19 @@ function restaurantSearch(name) {
       if(error) {
           console.log(error);
       } else {
+          results.splice(0, 1)
+          results.push(body)
           console.log(response.statusCode, JSON.stringify(body));
-          return body;
+
+          res.send(results)
       }
   });
-}
-
+});
 
 app.listen(8080);
+
+
+
 
 
 
