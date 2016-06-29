@@ -1,0 +1,14 @@
+#header {
+  height: 80px;
+  background-color: rgb(96,148,206);
+}
+
+logo {
+  margin-left: 30px;
+  padding-top: 10px;
+}
+
+#search {
+  /*padding-top: 10px;*/
+  padding-left: 50px;
+}
