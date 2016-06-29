@@ -8,19 +8,30 @@
 
   <body>
     <header id="header">
-      <div id="logo">Menu Panic</div>
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for..." id="search">
-              <span class="input-group-btn">
-                <button class="btn btn-default" id="search-button" type="button">Restaurant</button>
-              </span>
-            </div><!-- /input-group -->
-          </div><!-- /.col-lg-6 -->
-        </div>
+      <div id="logo">Menu Panic!</div>
     </header>
-    <script src="app.js"></script>
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <div class="panel panel-default" style="min-height: 300px">
+          <div class="panel-heading" id="search-title"><h3>Search a Restaurant</h3></div>
+          <div class="panel-body"
+            <form id="search-form">
+              <fieldset class="form-group">
+                <label for="nameSearch">Restaurant Name</label>
+                <input type="text" class="form-control" id="search" placeholder="Wilma's Patio, Chipotle, etc.">
+                <small class="text-muted">Find your restaurant!</small>
+              </fieldset>
+              <fieldset class="form-group">
+                <label for="zipCodeSearch">Zip Code</label>
+                <input type="name" class="form-control" id="postal" placeholder="92662">
+                <small class="text-muted">Enter the Zip Code of your Restaurant</small>
+              </fieldset>
+              <button type="submit" class="btn btn-primary" id="search-button">Stop Panicking!</button>
+            </form>
+          </div>
+      </div>
+    </div>
     <script src="default.js"></script>
   </body>
 </html>
