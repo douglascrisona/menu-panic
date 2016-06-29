@@ -8,7 +8,7 @@ app.use(jsonParser);
 app.use(express.static('./'))
 
 
-app.post('/restaurants', function(req, res) {
+app.get('/restaurants/', function(req, res) {
   var results = []
   request({
       url: 'https://api.locu.com/v2/venue/search',
@@ -17,9 +17,9 @@ app.post('/restaurants', function(req, res) {
         "fields" : [ "name", "contact", "location", "menus"],
         "venue_queries" : [
           {
-            "name" : req.body.name,
+            "name" : req.query.name,
             "location" : {
-              "postal_code" : req.body.zip
+              "postal_code" : req.query.zip
             }
           }
         ]
@@ -31,12 +31,16 @@ app.post('/restaurants', function(req, res) {
       } else {
           results.splice(0, 1)
           results.push(body)
-          console.log(response.statusCode, JSON.stringify(body));
+        //  console.log(response.statusCode, JSON.stringify(body));
 
           res.send(results)
       }
   });
+  console.log(req.query)
 });
+
+
+
 
 app.listen(8080);
 

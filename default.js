@@ -3,18 +3,15 @@ var button = document.getElementById('search-button');
 button.addEventListener('click', function(e) {
 var searchTerm = document.getElementById('search')
 var searchZip = document.getElementById('postal')
-  restSearch = venueSearch(searchTerm.value, searchZip.value)
-  console.log(restSearch)
+
 
 
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/restaurants/');
+  xhr.open('GET', '/restaurants/?name=' + searchTerm.value + '&' + 'zip=' + searchZip.value );
   xhr.setRequestHeader('Content-Type', 'application/json')
-  xhr.send(JSON.stringify(restSearch))
-  //console.log(restSearch)
+  xhr.send();
 
   xhr.onload = function() {
-    //console.log(JSON.parse(xhr.responseText))
     results = JSON.parse(xhr.responseText)
     results.forEach(function(result) {
       result.venues.forEach(function(venue) {
@@ -28,15 +25,6 @@ var searchZip = document.getElementById('postal')
   }
 
 });
-
-
-function venueSearch(name, zip) {
-  theSearch = {};
-  theSearch.name = name;
-  theSearch.zip = zip;
-  return theSearch;
-}
-
 
 
 // Type of route
