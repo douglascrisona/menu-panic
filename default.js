@@ -1,3 +1,6 @@
+var mealTypes = []
+var meal = {}
+
 var button = document.getElementById('search-button');
 
 button.addEventListener('click', function(e) {
@@ -10,7 +13,6 @@ var searchZip = document.getElementById('postal')
 
   xhr.send()
 
-
   xhr.onload = function() {
     results = JSON.parse(xhr.responseText)
     results.forEach(function(result) {
@@ -19,26 +21,25 @@ var searchZip = document.getElementById('postal')
         console.log(venue.name, venue.location.locality, venue.location.address1)
         venue.menus.forEach(function(mealType) {
           console.log(mealType.menu_name)
-          //console.log(name.sections)
+          mealTypes.push(mealType.menu_name.name) //temporary
           mealType.sections.forEach(function(sub) {
             console.log(sub.section_name)
-            //console.log(sub.subsections)
+            mealTypes.push(sub.section_name) //temporary
             sub.subsections.forEach(function(dishes) {
               dishes.contents.forEach(function(info) {
                 console.log(info.name)
-                //console.log(info.price)
+                mealTypes.push(info.name) //temporary
               })
-              //console.log(dishes.subsection_name)
-              //console.log(dishes.contents)
             })
           })
         });
       });
     });
   }
-
-
 });
+
+
+
 
 
 
@@ -79,22 +80,32 @@ searchAgain.addEventListener('click', function() {
   showSearch()
 });
 
+
+
 var menuButton = document.getElementById('menu-button');
 menuButton.addEventListener('click', function() {
-  var hideResults = document.getElementsByClassName('show')[0];
-  hideResults.classList.remove('show');
-  hideResults.classList.add('hide-results');
-});
-
-function displayMenu(sectionName) {
   var sectionTitle = document.createElement('div');
-  sectionTitle.textContent = sectionName;
-
-  var menuContainer = document.getElementsByClassName('hide-menu');
+  sectionTitle.textContent = mealTypes;
+  var menuContainer = document.getElementsByClassName('hide-menu')[0];
   menuContainer.classList.remove('hide-menu');
   menuContainer.classList.add('show-menu')
 
+  menuContainer.appendChild(sectionTitle)
+});
+
+function displayHeaders(headers) {
+  var sectionTitle = document.createElement('div');
+  sectionTitle.textContent = headers;
+  var menuContainer = document.getElementsByClassName('hide-menu')[0];
+  menuContainer.classList.remove('hide-menu');
+  menuContainer.classList.add('show-menu')
+
+  menuContainer.appendChild(sectionTitle)
 }
+
+
+
+
 
 
 

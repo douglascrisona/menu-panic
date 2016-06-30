@@ -47,7 +47,6 @@ app.listen(8080);
 
 
 
-
 // User searches for venue by nam & location
 // If matched, returns container with venue name and location
 // When user clicks, locu id loads entire menu
