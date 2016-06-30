@@ -31,14 +31,13 @@ app.get('/restaurants/', function(req, res) {
       } else {
           results.splice(0, 1)
           results.push(body)
-        //  console.log(response.statusCode, JSON.stringify(body));
+          console.log(response.statusCode /**JSON.stringify(body)**/);
 
           res.send(results)
       }
   });
   console.log(req.query)
 });
-
 
 
 

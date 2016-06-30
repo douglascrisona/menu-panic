@@ -1,14 +1,47 @@
+body {
+  background-color: rgb(252, 252, 252);
+}
+
 #header {
   height: 80px;
   background-color: rgb(96,148,206);
+  margin-bottom: 100px;
 }
 
-logo {
+#logo {
   margin-left: 30px;
-  padding-top: 10px;
+  padding-top: 25px;
+  font-size: 20px;
+  color: white;
+
 }
 
-#search {
+search {
   /*padding-top: 10px;*/
   padding-left: 50px;
+}
+
+#search-title {
+  padding-left: 20%;
+}
+
+#search-form {
+  padding-bottom: 10px;
+}
+
+.hide-search {
+  display: none;
+}
+
+.hide-results {
+  display: none;
+}
+
+search-icon {
+  margin-top: -100px;
+
+}
+
+.hide-menu {
+  display: none;
 }
