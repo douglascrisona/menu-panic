@@ -45,3 +45,14 @@ search-icon {
 .hide-menu {
   display: none;
 }
+
+#menu-container {
+  font-size: 20px;
+}
+#section-names {
+  font-weight: bold;
+}
+
+#restaurant-name {
+  font-size: 30px;
+}

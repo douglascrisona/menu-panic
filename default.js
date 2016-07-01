@@ -16,12 +16,14 @@ var searchZip = document.getElementById('postal')
   xhr.onload = function() {
     results = JSON.parse(xhr.responseText)
     var theLocation = document.createElement('div');
+    theLocation.setAttribute('class', 'panel panel-default col-md-4')
     //result.venues[0].menus
     results.forEach(function(result) {
 
 
       result.venues.forEach(function(venue) {
         theLocation.appendChild(theVenue(venue));
+        //displayRestaurant(venue.name, venue.location.locality, venue.location.address1)
       });
 
       result.venues[0].menus.forEach(function(menu){
@@ -39,7 +41,6 @@ var searchZip = document.getElementById('postal')
           });
         });
       });
-
     });
     var theEntireMenu = document.createElement('div');
     theEntireMenu.appendChild(theLocation);
@@ -50,6 +51,7 @@ var searchZip = document.getElementById('postal')
 
 function theVenue(data) {
   var theVenue = document.createElement('div');
+  theVenue.setAttribute('id', 'restaurant-name')
   theVenue.textContent = data.name;
   return theVenue;
 }
@@ -77,7 +79,7 @@ function theSubSection(data) {
 
 function theContent(data) {
   var theContent = document.createElement('div');
-  theContent.textContent = data.name + " description: " + data.description;
+  theContent.textContent = data.name /**+ " description: " + data.description**/;
   theContent.setAttribute('id', 'menu-items')
   return theContent
 }
@@ -116,6 +118,20 @@ function theContent(data) {
 
 function displayRestaurant(name, location, address) {
   hideSearch()
+
+  var showRestaurant = document.getElementsByClassName('hide-results')[0];
+  showRestaurant.classList.remove('hide-results');
+  showRestaurant.classList.add('show')
+
+  var nameContainer = document.getElementById('restaurant-info')
+  var restaurantName = document.createElement('div');
+
+  restaurantName.setAttribute('class', 'panel-body');
+  restaurantName.textContent = name +  " " + location + " " + address;
+  restaurantName.setAttribute('class', 'h5');
+
+  nameContainer.appendChild(restaurantName);
+
 }
 
 
