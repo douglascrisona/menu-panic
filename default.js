@@ -52,6 +52,7 @@ var searchZip = document.getElementById('postal')
   };
 });
 
+// Generates Menu on Results Page
 function theVenue(data) {
   var theVenue = document.createElement('div');
   theVenue.setAttribute('id', 'restaurant-name')
@@ -88,23 +89,28 @@ function theContent(data) {
   theContent.textContent = data.name /**+ " description: " + data.description**/;
   theContent.setAttribute('class', 'list-group-item')
   theContent.setAttribute('id', 'menu-items')
+
+  var option = document.createElement('input')
+  option.setAttribute('type', 'checkbox')
+  option.setAttribute('class', 'option')
+  option.setAttribute('value', data.name)
+  theContent.appendChild(option)
   return theContent
 }
 
-
+// Clears Page
 function switchClass(name, remove, add) {
   name.classList.remove(remove);
   name.classList.add(add)
 }
 
 
-
+// Should enable new search
 function showSearch() {
   var showSearchBox = document.getElementsByClassName('hide-search')[0];
   showSearchBox.classList.remove('hide-search');
   showSearchBox.classList.add('view-search');
 }
-
 
 var searchAgain = document.getElementById('click');
 searchAgain.addEventListener('click', function() {
@@ -114,13 +120,26 @@ searchAgain.addEventListener('click', function() {
   showSearch()
 });
 
+/**
+var checkedOption = []
+document.getElementsByClassName('view')[0].addEventListener('click', function(e) {
+  var theOption = e.target
+  if(theOption.className == 'option') {
 
-
-function clear(area) {
-  while(area.firstChild) {
-    area.removeChild(area.firstChild);
+    checkedOption.push(document.querySelector('.option:checked').value)
+    console.log(checkedOption)
+    }
+})
+**/
+var checkedOption = []
+var theArea = document.getElementsByClassName('view')[0];
+theArea.addEventListener('click', function(e) {
+  var theNewOption = e.target;
+  if(theNewOption.className === 'option') {
+    checkedOption.push(document.querySelector('.option:checked').value)
   }
-}
+})
+
 
 
 

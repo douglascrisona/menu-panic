@@ -3,6 +3,8 @@ var app = express()
 var jsonParser = require('body-parser').json();
 var request = require('request');
 
+options = [] //temporary way to store options when braodcasting vote
+
 
 app.use(jsonParser);
 app.use(express.static('./'))
@@ -37,6 +39,12 @@ app.get('/restaurants/', function(req, res) {
       }
   });
   console.log(req.query)
+});
+
+app.post('/choices/', function(req, res) {
+  options.push(req.body.optionA, req.body.optionB, req.body.optionC)
+  console.log(options)
+  res.send(options)
 });
 
 

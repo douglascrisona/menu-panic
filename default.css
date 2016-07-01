@@ -64,3 +64,7 @@ search-icon {
   color: gray;
   font-weight: bold;
 }
+
+.option {
+  float: right;
+}
