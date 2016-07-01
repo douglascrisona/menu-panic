@@ -16,7 +16,7 @@ var searchZip = document.getElementById('postal')
   xhr.onload = function() {
     results = JSON.parse(xhr.responseText)
     var theLocation = document.createElement('div');
-    theLocation.setAttribute('class', 'panel panel-default col-md-4')
+    theLocation.setAttribute('class', 'panel panel-default col-md-5')
     //result.venues[0].menus
     results.forEach(function(result) {
 
@@ -52,6 +52,7 @@ var searchZip = document.getElementById('postal')
 function theVenue(data) {
   var theVenue = document.createElement('div');
   theVenue.setAttribute('id', 'restaurant-name')
+  //theVenue.setAttribute('class', 'panel panel-default')
   theVenue.textContent = data.name;
   return theVenue;
 }
@@ -59,6 +60,7 @@ function theVenue(data) {
 function theMenu(data) {
   var theMenu = document.createElement('div');
   theMenu.setAttribute('id', 'menu-container')
+  //theMenu.setAttribute('class', 'panel panel-default')
   theMenu.textContent = data.menu_name;
   return theMenu;
 }
@@ -80,6 +82,7 @@ function theSubSection(data) {
 function theContent(data) {
   var theContent = document.createElement('div');
   theContent.textContent = data.name /**+ " description: " + data.description**/;
+  //theContent.setAttribute('class', 'panel panel-default')
   theContent.setAttribute('id', 'menu-items')
   return theContent
 }

@@ -51,8 +51,10 @@ search-icon {
 }
 #section-names {
   font-weight: bold;
+
 }
 
 #restaurant-name {
   font-size: 30px;
+  font-weight: bold;
 }
