@@ -16,7 +16,7 @@ var searchZip = document.getElementById('postal')
   xhr.onload = function() {
     results = JSON.parse(xhr.responseText)
     var theLocation = document.createElement('div');
-    theLocation.setAttribute('class', 'panel panel-default col-md-5')
+    //panel panel-default col-md-5 list-group'theLocation.setAttribute('class', 'panel panel-default col-md-5 list-group')
     //result.venues[0].menus
     results.forEach(function(result) {
 
@@ -43,6 +43,7 @@ var searchZip = document.getElementById('postal')
       });
     });
     var theEntireMenu = document.createElement('div');
+    theEntireMenu.setAttribute('class', 'col-md-8 list-group')
     theEntireMenu.appendChild(theLocation);
     hideSearch()
     document.getElementsByClassName('view')[0].appendChild(theEntireMenu)
@@ -52,7 +53,7 @@ var searchZip = document.getElementById('postal')
 function theVenue(data) {
   var theVenue = document.createElement('div');
   theVenue.setAttribute('id', 'restaurant-name')
-  //theVenue.setAttribute('class', 'panel panel-default')
+  theVenue.setAttribute('class', 'list-group-item')
   theVenue.textContent = data.name;
   return theVenue;
 }
@@ -60,7 +61,7 @@ function theVenue(data) {
 function theMenu(data) {
   var theMenu = document.createElement('div');
   theMenu.setAttribute('id', 'menu-container')
-  //theMenu.setAttribute('class', 'panel panel-default')
+  theMenu.setAttribute('class', 'list-group-item')
   theMenu.textContent = data.menu_name;
   return theMenu;
 }
@@ -68,6 +69,7 @@ function theMenu(data) {
 function theSection(data) {
   var theSection = document.createElement('div')
   theSection.setAttribute('id', 'section-names')
+  theSection.setAttribute('class', 'list-group-item')
   theSection.textContent = data.section_name;
   return theSection;
 }
@@ -82,7 +84,7 @@ function theSubSection(data) {
 function theContent(data) {
   var theContent = document.createElement('div');
   theContent.textContent = data.name /**+ " description: " + data.description**/;
-  //theContent.setAttribute('class', 'panel panel-default')
+  theContent.setAttribute('class', 'list-group-item')
   theContent.setAttribute('id', 'menu-items')
   return theContent
 }
