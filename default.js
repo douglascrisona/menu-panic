@@ -1,6 +1,8 @@
 var mealTypes = []
 var meal = {}
 
+var hide = document.getElementsByClassName('view-search')[0];
+
 var button = document.getElementById('search-button');
 
 button.addEventListener('click', function(e) {
@@ -45,7 +47,7 @@ var searchZip = document.getElementById('postal')
     var theEntireMenu = document.createElement('div');
     theEntireMenu.setAttribute('class', 'col-md-8 list-group')
     theEntireMenu.appendChild(theLocation);
-    hideSearch()
+    switchClass(hide, 'view-search', 'hide-search')
     document.getElementsByClassName('view')[0].appendChild(theEntireMenu)
   };
 });
@@ -54,7 +56,7 @@ function theVenue(data) {
   var theVenue = document.createElement('div');
   theVenue.setAttribute('id', 'restaurant-name')
   theVenue.setAttribute('class', 'list-group-item')
-  theVenue.textContent = data.name;
+  theVenue.textContent = data.name; /**+ " | " + data.location.address1**/
   return theVenue;
 }
 
@@ -90,63 +92,12 @@ function theContent(data) {
 }
 
 
-
-
-/**
-  xhr.onload = function() {
-    results = JSON.parse(xhr.responseText)
-    results.forEach(function(result) {
-      result.venues.forEach(function(venue) {
-        displayResults(venue.name, venue.location.locality, venue.location.address1)
-        console.log(venue.name, venue.location.locality, venue.location.address1)
-        venue.menus.forEach(function(mealType) {
-          console.log(mealType.menu_name)
-          mealTypes.push(mealType.menu_name.name) //temporary
-          mealType.sections.forEach(function(sub) {
-            console.log(sub.section_name)
-            mealTypes.push(sub.section_name) //temporary
-            sub.subsections.forEach(function(dishes) {
-              dishes.contents.forEach(function(info) {
-                console.log(info.name)
-                mealTypes.push(info.name) //temporary
-              })
-            })
-          })
-        });
-      });
-    });
-  }
-});
-**/
-
-
-
-function displayRestaurant(name, location, address) {
-  hideSearch()
-
-  var showRestaurant = document.getElementsByClassName('hide-results')[0];
-  showRestaurant.classList.remove('hide-results');
-  showRestaurant.classList.add('show')
-
-  var nameContainer = document.getElementById('restaurant-info')
-  var restaurantName = document.createElement('div');
-
-  restaurantName.setAttribute('class', 'panel-body');
-  restaurantName.textContent = name +  " " + location + " " + address;
-  restaurantName.setAttribute('class', 'h5');
-
-  nameContainer.appendChild(restaurantName);
-
+function switchClass(name, remove, add) {
+  name.classList.remove(remove);
+  name.classList.add(add)
 }
 
 
-
-
-function hideSearch() {
-  var hideSearchBox = document.getElementsByClassName('view-search')[0];
-  hideSearchBox.classList.remove("view-search");
-  hideSearchBox.classList.add("hide-search");
-}
 
 function showSearch() {
   var showSearchBox = document.getElementsByClassName('hide-search')[0];
@@ -154,55 +105,22 @@ function showSearch() {
   showSearchBox.classList.add('view-search');
 }
 
-function displayResults(name, location, address) {
-  hideSearch()
-  var showRestaurant = document.getElementsByClassName('hide-results')[0];
-  showRestaurant.classList.remove('hide-results');
-  showRestaurant.classList.add('show')
-
-  var nameContainer = document.getElementById('restaurant-info')
-  var restaurantName = document.createElement('div');
-
-  restaurantName.setAttribute('class', 'panel-body');
-  restaurantName.textContent = name +  " " + location + " " + address;
-  restaurantName.setAttribute('class', 'h5');
-
-  nameContainer.appendChild(restaurantName);
-}
 
 var searchAgain = document.getElementById('click');
 searchAgain.addEventListener('click', function() {
   var hideResults = document.getElementsByClassName('show')[0];
   hideResults.classList.remove('show');
   hideResults.classList.add('hide-results');
-
   showSearch()
 });
 
 
 
-var menuButton = document.getElementById('menu-button');
-menuButton.addEventListener('click', function() {
-  var sectionTitle = document.createElement('div');
-  sectionTitle.textContent = mealTypes;
-  var menuContainer = document.getElementsByClassName('hide-menu')[0];
-  menuContainer.classList.remove('hide-menu');
-  menuContainer.classList.add('show-menu')
-
-  menuContainer.appendChild(sectionTitle)
-});
-
-function displayHeaders(headers) {
-  var sectionTitle = document.createElement('div');
-  sectionTitle.textContent = headers;
-  var menuContainer = document.getElementsByClassName('hide-menu')[0];
-  menuContainer.classList.remove('hide-menu');
-  menuContainer.classList.add('show-menu')
-
-  menuContainer.appendChild(sectionTitle)
+function clear(area) {
+  while(area.firstChild) {
+    area.removeChild(area.firstChild);
+  }
 }
-
-
 
 
 
