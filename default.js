@@ -15,6 +15,79 @@ var searchZip = document.getElementById('postal')
 
   xhr.onload = function() {
     results = JSON.parse(xhr.responseText)
+    var theLocation = document.createElement('div');
+    //result.venues[0].menus
+    results.forEach(function(result) {
+
+
+      result.venues.forEach(function(venue) {
+        theLocation.appendChild(theVenue(venue));
+      });
+
+      result.venues[0].menus.forEach(function(menu){
+        theLocation.appendChild(theMenu(menu));
+
+        menu.sections.forEach(function(section) {
+          theLocation.appendChild(theSection(section));
+
+          section.subsections.forEach(function(subsection){
+            //theLocation.appendChild(theSubSection(subsection));
+
+            subsection.contents.forEach(function(content) {
+              theLocation.appendChild(theContent(content));
+            })
+          });
+        });
+      });
+
+    });
+    var theEntireMenu = document.createElement('div');
+    theEntireMenu.appendChild(theLocation);
+    hideSearch()
+    document.getElementsByClassName('view')[0].appendChild(theEntireMenu)
+  };
+});
+
+function theVenue(data) {
+  var theVenue = document.createElement('div');
+  theVenue.textContent = data.name;
+  return theVenue;
+}
+
+function theMenu(data) {
+  var theMenu = document.createElement('div');
+  theMenu.setAttribute('id', 'menu-container')
+  theMenu.textContent = data.menu_name;
+  return theMenu;
+}
+
+function theSection(data) {
+  var theSection = document.createElement('div')
+  theSection.setAttribute('id', 'section-names')
+  theSection.textContent = data.section_name;
+  return theSection;
+}
+
+function theSubSection(data) {
+  var theSubSection = document.createElement('div');
+  theSubSection.setAttribute('id', 'subsection-names');
+  theSection.textContent = data.subsection_name;
+  return theSubSection
+}
+
+function theContent(data) {
+  var theContent = document.createElement('div');
+  theContent.textContent = data.name + " description: " + data.description;
+  theContent.setAttribute('id', 'menu-items')
+  return theContent
+}
+
+
+
+
+/**
+  xhr.onload = function() {
+    results = JSON.parse(xhr.responseText)
     results.forEach(function(result) {
       result.venues.forEach(function(venue) {
         displayResults(venue.name, venue.location.locality, venue.location.address1)
@@ -37,8 +110,13 @@ var searchZip = document.getElementById('postal')
     });
   }
 });
+**/
 
 
+
+function displayRestaurant(name, location, address) {
+  hideSearch()
+}
 
 
 
