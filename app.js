@@ -42,9 +42,8 @@ app.get('/restaurants/', function(req, res) {
 });
 
 app.post('/choices/', function(req, res) {
-  options.push(req.body.optionA, req.body.optionB, req.body.optionC)
-  console.log(options)
-  res.send(options)
+  console.log(req.body)
+  res.send()
 });
 
 

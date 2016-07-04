@@ -18,11 +18,8 @@ var searchZip = document.getElementById('postal')
   xhr.onload = function() {
     results = JSON.parse(xhr.responseText)
     var theLocation = document.createElement('div');
-    //panel panel-default col-md-5 list-group'theLocation.setAttribute('class', 'panel panel-default col-md-5 list-group')
-    //result.venues[0].menus
+
     results.forEach(function(result) {
-
-
       result.venues.forEach(function(venue) {
         theLocation.appendChild(theVenue(venue));
         //displayRestaurant(venue.name, venue.location.locality, venue.location.address1)
@@ -44,11 +41,7 @@ var searchZip = document.getElementById('postal')
         });
       });
     });
-    var theEntireMenu = document.createElement('div');
-    theEntireMenu.setAttribute('class', 'col-md-8 list-group')
-    theEntireMenu.appendChild(theLocation);
-    switchClass(hide, 'view-search', 'hide-search')
-    document.getElementsByClassName('view')[0].appendChild(theEntireMenu)
+    menuDisplay(theLocation)
   };
 });
 
@@ -98,6 +91,21 @@ function theContent(data) {
   return theContent
 }
 
+function menuDisplay(theLocation) {
+  var theEntireMenu = document.createElement('div');
+  theEntireMenu.setAttribute('class', 'col-md-8 list-group form')
+  theEntireMenu.setAttribute('id', 'vote-form')
+  theEntireMenu.appendChild(theLocation);
+  var voteButton = document.createElement('button')
+  voteButton.setAttribute('class', 'btn btn-primary')
+  voteButton.textContent = 'Get some help!'
+  voteButton.setAttribute('id', 'vote-button')
+  theEntireMenu.appendChild(voteButton)
+  switchClass(hide, 'view-search', 'hide-search')
+  document.getElementsByClassName('view')[0].appendChild(theEntireMenu)
+}
+
+
 // Clears Page
 function switchClass(name, remove, add) {
   name.classList.remove(remove);
@@ -120,31 +128,27 @@ searchAgain.addEventListener('click', function() {
   showSearch()
 });
 
-/**
-var checkedOption = []
-document.getElementsByClassName('view')[0].addEventListener('click', function(e) {
-  var theOption = e.target
-  if(theOption.className == 'option') {
 
-    checkedOption.push(document.querySelector('.option:checked').value)
-    console.log(checkedOption)
-    }
-})
-**/
 var checkedOption = []
 var theArea = document.getElementsByClassName('view')[0];
 theArea.addEventListener('click', function(e) {
   var theNewOption = e.target;
   if(theNewOption.className === 'option') {
-    checkedOption.push(document.querySelector('.option:checked').value)
+    //checkedOption.push(document.querySelector('.option:checked').value)
+      checkedOption.push(theNewOption.value)
+      console.log(checkedOption)
+  }
+});
+
+
+theArea.addEventListener('click', function(e) {
+  var submitVote = e.target;
+  if(submitVote.id == 'vote-button') {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/choices')
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.send(JSON.stringify(checkedOption))
+
+    console.log('Vote sent')
   }
 })
-
-
-
-
-
-
-// Type of route
-// How to use the request module
-// How to access the returned data
