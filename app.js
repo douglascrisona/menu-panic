@@ -2,8 +2,9 @@ var express = require('express')
 var app = express()
 var jsonParser = require('body-parser').json();
 var request = require('request');
+var users = require('./users.js')
 
-options = [] //temporary way to store options when braodcasting vote
+var options = [] //temporary way to store options when braodcasting vote
 
 
 app.use(jsonParser);
@@ -41,11 +42,24 @@ app.get('/restaurants/', function(req, res) {
   console.log(req.query)
 });
 
+// Places selected items in corresponding user object
 app.post('/choices/', function(req, res) {
-  console.log(req.body)
+  users.forEach(function(user) {
+    if(user.password == '5678') {
+      user.choices.forEach(function(item) {
+        item.items = req.body
+        console.log(item.items)
+      });
+    }
+  });
   res.send()
 });
 
+
+
+app.post('/vote', function(req, res) {
+  res.send()
+})
 
 
 app.listen(8080);
