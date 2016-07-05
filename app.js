@@ -45,7 +45,7 @@ app.get('/restaurants/', function(req, res) {
 // Places selected items in corresponding user object
 app.post('/choices/', function(req, res) {
   users.forEach(function(user) {
-    if(user.password == '5678') {
+    if(user.password == '1234') {
       user.choices.forEach(function(item) {
         item.items = req.body
         console.log(item.items)
@@ -58,8 +58,22 @@ app.post('/choices/', function(req, res) {
 
 
 app.post('/vote', function(req, res) {
+  //console.log(req.body.food)
+  //console.log(req.body.food)
+  users.forEach(function(item) {
+    item.choices.forEach(function(food) {
+      //console.log(food.items)
+      food.items.forEach(function(dish) {
+        if(req.body.food == dish) {
+          console.log('ONE VOTE FOR ' + dish)
+        }
+      })
+    })
+  })
+
   res.send()
 })
+
 
 
 app.listen(8080);

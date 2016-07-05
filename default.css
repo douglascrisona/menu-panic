@@ -68,3 +68,12 @@ search-icon {
 .option {
   float: right;
 }
+
+#vote-button {
+  margin-top: 15px;
+}
+
+#result-boxes {
+  margin-left: 20px;
+  font-size: 20px;
+}

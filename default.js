@@ -120,6 +120,7 @@ function showSearch() {
   showSearchBox.classList.add('view-search');
 }
 
+/**
 var searchAgain = document.getElementById('click');
 searchAgain.addEventListener('click', function() {
   var hideResults = document.getElementsByClassName('show')[0];
@@ -127,6 +128,7 @@ searchAgain.addEventListener('click', function() {
   hideResults.classList.add('hide-results');
   showSearch()
 });
+**/
 
 
 var checkedOption = []
@@ -136,7 +138,6 @@ theArea.addEventListener('click', function(e) {
   if(theNewOption.className === 'option') {
     //checkedOption.push(document.querySelector('.option:checked').value)
       checkedOption.push(theNewOption.value)
-      console.log(checkedOption)
   }
 });
 
@@ -144,11 +145,76 @@ theArea.addEventListener('click', function(e) {
 theArea.addEventListener('click', function(e) {
   var submitVote = e.target;
   if(submitVote.id == 'vote-button') {
+
+    votePage(checkedOption)
+
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/choices')
     xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.send(JSON.stringify(checkedOption))
+    console.log(checkedOption)
 
     console.log('Vote sent')
   }
 })
+
+function votePage(options) {
+  //var choices = document.createElement('div')
+  //choices.textContent = options
+  options.forEach(function(item) {
+    var itemBox = document.createElement('div')
+    itemBox.setAttribute('class', 'panel panel-default col-xs-3')
+    itemBox.textContent = item + ' '
+    itemBox.setAttribute('id', 'result-boxes')
+
+    var voteSelector = document.createElement('input');
+    voteSelector.setAttribute('type', 'radio')
+    voteSelector.setAttribute('class', 'pull-right')
+    voteSelector.setAttribute('id', 'the-vote')
+    voteSelector.setAttribute('name', 'vote')
+    voteSelector.setAttribute('value', item)
+    itemBox.appendChild(voteSelector);
+
+    document.getElementsByClassName('view-vote')[0].appendChild(itemBox)
+  })
+  var voteIt = document.createElement('button');
+  voteIt.textContent = 'VOTE'
+  voteIt.setAttribute('class', 'btn btn-primary')
+  voteIt.setAttribute('id', 'the-vote-button')
+  document.getElementsByClassName('view-vote')[0].appendChild(voteIt)
+  switchClass(theArea, 'view', 'hide-search')
+
+}
+
+document.getElementsByClassName('view-vote')[0].addEventListener('click', function(e) {
+  voteButton = e.target;
+  if(voteButton.id == 'the-vote-button') {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/vote')
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.send(JSON.stringify(theItem))
+
+
+  }
+})
+
+
+theItem = {}
+
+var voteRadio = document.getElementsByClassName('view-vote')[0];
+voteRadio.addEventListener('click', function(e) {
+  var theVote = e.target;
+  if(theVote.id == 'the-vote') {
+    //theItem.food = theVote.value
+    //theItem.password = '1234'
+    voteMatch(theVote.value)
+    console.log(theItem)
+  }
+})
+
+function voteMatch(item) {
+  theItem = {};
+  theItem.food = item;
+  //theItem.password = '1234'
+  return theItem;
+}
