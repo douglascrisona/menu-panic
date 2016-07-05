@@ -1,10 +1,41 @@
 var mealTypes = []
 var meal = {}
-
+var session = {}
+var loginName = {}
 var hide = document.getElementsByClassName('view-search')[0];
 
-var button = document.getElementById('search-button');
 
+var loginButton = document.getElementById('login');
+loginButton.addEventListener('click', function(e) {
+  var name = document.getElementById('username').value;
+  var password = document.getElementById('password').value;
+  var verify = loginCheck(name, password);
+
+  loginName.name = name;
+
+
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/login')
+  xhr.setRequestHeader('Content-Type', 'application/json')
+  xhr.send(JSON.stringify(verify));
+
+
+  xhr.onload = function() {
+    if(xhr.responseText == name) {
+      var login = document.getElementsByClassName('login')[0]
+      switchClass(login, 'login', 'hide-login')
+
+      var theSearch = document.getElementsByClassName('hide')[0]
+      switchClass(theSearch, 'hide', 'view')
+
+      session.id = xhr.responseText
+    }
+  }
+})
+
+
+var button = document.getElementById('search-button');
 button.addEventListener('click', function(e) {
 var searchTerm = document.getElementById('search')
 var searchZip = document.getElementById('postal')
@@ -132,7 +163,7 @@ searchAgain.addEventListener('click', function() {
 
 
 var checkedOption = []
-var theArea = document.getElementsByClassName('view')[0];
+var theArea = document.getElementsByTagName('body')[0];
 theArea.addEventListener('click', function(e) {
   var theNewOption = e.target;
   if(theNewOption.className === 'option') {
@@ -176,14 +207,16 @@ function votePage(options) {
     itemBox.appendChild(voteSelector);
 
     document.getElementsByClassName('view-vote')[0].appendChild(itemBox)
+    
   })
   var voteIt = document.createElement('button');
   voteIt.textContent = 'VOTE'
   voteIt.setAttribute('class', 'btn btn-primary')
   voteIt.setAttribute('id', 'the-vote-button')
   document.getElementsByClassName('view-vote')[0].appendChild(voteIt)
-  switchClass(theArea, 'view', 'hide-search')
 
+  var newArea = document.getElementsByClassName('view')[0]
+  switchClass(newArea, 'view', 'hide-menu')
 }
 
 document.getElementsByClassName('view-vote')[0].addEventListener('click', function(e) {
@@ -217,4 +250,11 @@ function voteMatch(item) {
   theItem.food = item;
   //theItem.password = '1234'
   return theItem;
+}
+
+function loginCheck(username, password) {
+  userCreds = {};
+  userCreds.name = username;
+  userCreds.password = password;
+  return userCreds;
 }

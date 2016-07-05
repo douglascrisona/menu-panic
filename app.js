@@ -10,6 +10,14 @@ var options = [] //temporary way to store options when braodcasting vote
 app.use(jsonParser);
 app.use(express.static('./'))
 
+app.post('/login', function(req, res) {
+  users.forEach(function(user) {
+    if((req.body.name == user.name) && (req.body.password == user.password)) {
+
+      res.send(user.name)
+    }
+  });
+});
 
 app.get('/restaurants/', function(req, res) {
   var results = []
@@ -45,12 +53,12 @@ app.get('/restaurants/', function(req, res) {
 // Places selected items in corresponding user object
 app.post('/choices/', function(req, res) {
   users.forEach(function(user) {
-    if(user.password == '1234') {
+    //if(user.password == '1234') {
       user.choices.forEach(function(item) {
         item.items = req.body
         console.log(item.items)
       });
-    }
+    //}
   });
   res.send()
 });
