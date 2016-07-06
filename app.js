@@ -4,8 +4,8 @@ var jsonParser = require('body-parser').json();
 var request = require('request');
 var users = require('./users.js')
 
-var options = [] //temporary way to store options when braodcasting vote
-
+var userID = [] // Provides user a sepcific ID for assigning selected menu items and voting
+var theChoices = []
 
 app.use(jsonParser);
 app.use(express.static('./'))
@@ -13,7 +13,9 @@ app.use(express.static('./'))
 app.post('/login', function(req, res) {
   users.forEach(function(user) {
     if((req.body.name == user.name) && (req.body.password == user.password)) {
-
+      userID.push(req.body.name)
+      //userID.id = req.body.name
+      //userID.name = req.body.name
       res.send(user.name)
     }
   });
@@ -50,27 +52,33 @@ app.get('/restaurants/', function(req, res) {
   console.log(req.query)
 });
 
-// Places selected items in corresponding user object
+// Should place selected items from menu in corresponding user object
 app.post('/choices/', function(req, res) {
-  users.forEach(function(user) {
-    //if(user.password == '1234') {
-      user.choices.forEach(function(item) {
-        item.items = req.body
-        console.log(item.items)
-      });
-    //}
+  //console.log(req.body)
+  userID.forEach(function(userName) {
+    users.forEach(function(name) {
+      if(userName == name.name) {
+        name.choices.forEach(function(item) {
+            item.items = req.body
+            console.log(item.items)
+            //console.log(item.items)
+            //console.log(name.name, name.choices)
+            var theChoice = {}
+            theChoice.item = item.items
+            theChoices.splice(0, 1)
+            theChoices.push(theChoice)
+        });
+     }
+   })
   });
-  res.send()
+    res.send(theChoices)
 });
 
 
 
 app.post('/vote', function(req, res) {
-  //console.log(req.body.food)
-  //console.log(req.body.food)
   users.forEach(function(item) {
     item.choices.forEach(function(food) {
-      //console.log(food.items)
       food.items.forEach(function(dish) {
         if(req.body.food == dish) {
           console.log('ONE VOTE FOR ' + dish)
@@ -90,18 +98,16 @@ app.listen(8080);
 
 
 
-// User searches for venue by nam & location
+// User searches for venue by name & location
 // If matched, returns container with venue name and location
 // When user clicks, locu id loads entire menu
 
 
 /** Functionality
-1. User can search restaurants
-2. User can select menu items
-3. User can broadcast a votes.
-4. User can respond to broadcast by voting.
+1. User can search restaurants & view menu
+2. User can braodcast a vote
+3. User can respond to broadcast by voting.
   - How to handle notifications? (sms via twilio?)
-
 5. Users can make friend circles.
 6. User can broadcast to a specific circle.
 7. User can gain badges/reputation. (Quick responder, accurate, loose cannon)

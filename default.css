@@ -1,10 +1,16 @@
 body {
-  background-color: rgb(252, 252, 252);
+  /*height: 100%;*/
+  max-width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("images/water-drink-glass-drinking.jpg");
+  overflow-x: hidden;
 }
 
 #header {
-  height: 80px;
-  background-color: rgb(96,148,206);
+  height: 90px;
+  background-color: rgba(0,0,0,0.4);
+/** background-color: rgba(96,148,206, .5); **/
   margin-bottom: 100px;
 }
 
@@ -88,4 +94,21 @@ search-icon {
 
 .hide-menu {
   display: none;
+}
+
+#view-votes {
+/*  color: #36454f; */
+  color: white;
+  font-weight: bold;
+  margin-left: 80%;
+  margin-top: -40px;
+  border: 2px solid white;
+  border-radius: 5px;
+  width: 110px;
+  padding: 5px;
+}
+
+#view-votes:hover {
+  color: gray;
+  border-color: gray;
 }

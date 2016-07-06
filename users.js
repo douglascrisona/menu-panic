@@ -3,7 +3,7 @@ var users = [
     name: 'Doug',
     password: 1234,
     choices: [
-      { items: ['sauce'] }
+      { items: [] }
     ]
   },
   {

@@ -1,0 +1,114 @@
+body {
+  /*height: 850px;*/
+  max-width: 100%;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-image: url("images/water-drink-glass-drinking.jpg");
+  overflow-x: hidden;
+}
+
+#header {
+  height: 90px;
+  background-color: rgba(0,0,0,0.4);
+/** background-color: rgba(96,148,206, .5); **/
+  margin-bottom: 100px;
+}
+
+#logo {
+  margin-left: 30px;
+  padding-top: 25px;
+  font-size: 20px;
+  color: white;
+
+}
+
+search {
+  /*padding-top: 10px;*/
+  padding-left: 50px;
+}
+
+#search-title {
+  padding-left: 20%;
+}
+
+#search-form {
+  padding-bottom: 10px;
+}
+
+.hide-search {
+  display: none;
+}
+
+.hide-results {
+  display: none;
+}
+
+search-icon {
+  margin-top: -100px;
+
+}
+
+.hide-menu {
+  display: none;
+}
+
+#menu-container {
+  font-size: 20px;
+}
+#section-names {
+  font-weight: bold;
+  font-size: 18px;
+
+}
+
+#restaurant-name {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+#menu-items {
+  color: gray;
+  font-weight: bold;
+}
+
+.option {
+  float: right;
+}
+
+#vote-button {
+  margin-top: 15px;
+}
+
+#result-boxes {
+  margin-left: 20px;
+  font-size: 20px;
+}
+
+.hide {
+  display: none;
+}
+
+.hide-login {
+  display: none;
+}
+
+.hide-menu {
+  display: none;
+}
+
+#view-votes {
+/*  color: #36454f; */
+  color: white;
+  font-weight: bold;
+  margin-left: 80%;
+  margin-top: -40px;
+  border: 2px solid white;
+  border-radius: 5px;
+  width: 110px;
+  padding: 5px;
+}
+
+#view-votes:hover {
+  color: gray;
+  border-color: gray;
+}

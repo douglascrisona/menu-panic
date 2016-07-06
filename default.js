@@ -4,22 +4,20 @@ var session = {}
 var loginName = {}
 var hide = document.getElementsByClassName('view-search')[0];
 
+var theArea = document.getElementsByTagName('body')[0];
 
+// Logs user in, clears page and loads homepage
 var loginButton = document.getElementById('login');
 loginButton.addEventListener('click', function(e) {
   var name = document.getElementById('username').value;
   var password = document.getElementById('password').value;
   var verify = loginCheck(name, password);
-
   loginName.name = name;
-
-
 
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/login')
   xhr.setRequestHeader('Content-Type', 'application/json')
   xhr.send(JSON.stringify(verify));
-
 
   xhr.onload = function() {
     if(xhr.responseText == name) {
@@ -29,16 +27,27 @@ loginButton.addEventListener('click', function(e) {
       var theSearch = document.getElementsByClassName('hide')[0]
       switchClass(theSearch, 'hide', 'view')
 
+      viewVotes(); // Loads 'Pending Votes' linkt to navbar
+
       session.id = xhr.responseText
     }
   }
 })
+// Generates Pending Votes link
+function viewVotes() {
+  var viewVotes = document.createElement('div');
+  viewVotes.textContent = 'Pending Votes'
+  viewVotes.setAttribute('id', 'view-votes')
+  document.getElementById('header').appendChild(viewVotes)
+}
 
 
+// Searches for restaurant and loads menu
 var button = document.getElementById('search-button');
 button.addEventListener('click', function(e) {
 var searchTerm = document.getElementById('search')
 var searchZip = document.getElementById('postal')
+console.log(loginName.name)
 
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/restaurants/?name=' + searchTerm.value + '&' + 'zip=' + searchZip.value );
@@ -53,7 +62,7 @@ var searchZip = document.getElementById('postal')
     results.forEach(function(result) {
       result.venues.forEach(function(venue) {
         theLocation.appendChild(theVenue(venue));
-        //displayRestaurant(venue.name, venue.location.locality, venue.location.address1)
+
       });
 
       result.venues[0].menus.forEach(function(menu){
@@ -63,7 +72,6 @@ var searchZip = document.getElementById('postal')
           theLocation.appendChild(theSection(section));
 
           section.subsections.forEach(function(subsection){
-            //theLocation.appendChild(theSubSection(subsection));
 
             subsection.contents.forEach(function(content) {
               theLocation.appendChild(theContent(content));
@@ -72,9 +80,10 @@ var searchZip = document.getElementById('postal')
         });
       });
     });
-    menuDisplay(theLocation)
+    menuDisplay(theLocation)  // Creates menu element on page
   };
 });
+
 
 // Generates Menu on Results Page
 function theVenue(data) {
@@ -151,28 +160,31 @@ function showSearch() {
   showSearchBox.classList.add('view-search');
 }
 
-/**
-var searchAgain = document.getElementById('click');
-searchAgain.addEventListener('click', function() {
-  var hideResults = document.getElementsByClassName('show')[0];
-  hideResults.classList.remove('show');
-  hideResults.classList.add('hide-results');
-  showSearch()
-});
-**/
-
-
-var checkedOption = []
+var checkedOption = [] //Stores selected items from the menu
 var theArea = document.getElementsByTagName('body')[0];
 theArea.addEventListener('click', function(e) {
   var theNewOption = e.target;
   if(theNewOption.className === 'option') {
-    //checkedOption.push(document.querySelector('.option:checked').value)
       checkedOption.push(theNewOption.value)
   }
 });
 
+theVoteOptions = []
+theArea.addEventListener('click', function(e) {
+  var voteLink = e.target;
+  if(voteLink.id == 'view-votes') {
+    //console.log(theVoteOptions)
+    theVoteOptions.forEach(function(item) {
+      console.log(item)
+      console.log(item.item)
+    });
+    switchClass(theArea, 'view', 'hide')
+    votePage(checkedOption)
 
+  }
+})
+
+// Loads selected items to new vote page
 theArea.addEventListener('click', function(e) {
   var submitVote = e.target;
   if(submitVote.id == 'vote-button') {
@@ -185,10 +197,16 @@ theArea.addEventListener('click', function(e) {
     xhr.send(JSON.stringify(checkedOption))
     console.log(checkedOption)
 
+    xhr.onload = function() {
+      console.log(xhr.responseText)
+      theVoteOptions.push(JSON.parse(xhr.responseText))
+    }
+
     console.log('Vote sent')
   }
 })
 
+// Generates vote page elements
 function votePage(options) {
   //var choices = document.createElement('div')
   //choices.textContent = options
@@ -197,6 +215,7 @@ function votePage(options) {
     itemBox.setAttribute('class', 'panel panel-default col-xs-3')
     itemBox.textContent = item + ' '
     itemBox.setAttribute('id', 'result-boxes')
+    itemBox.setAttribute('data-id', session.id)
 
     var voteSelector = document.createElement('input');
     voteSelector.setAttribute('type', 'radio')
@@ -207,7 +226,7 @@ function votePage(options) {
     itemBox.appendChild(voteSelector);
 
     document.getElementsByClassName('view-vote')[0].appendChild(itemBox)
-    
+
   })
   var voteIt = document.createElement('button');
   voteIt.textContent = 'VOTE'
@@ -219,6 +238,7 @@ function votePage(options) {
   switchClass(newArea, 'view', 'hide-menu')
 }
 
+// Submits item/dish value to back-end
 document.getElementsByClassName('view-vote')[0].addEventListener('click', function(e) {
   voteButton = e.target;
   if(voteButton.id == 'the-vote-button') {
@@ -231,15 +251,11 @@ document.getElementsByClassName('view-vote')[0].addEventListener('click', functi
   }
 })
 
-
-theItem = {}
-
+// Selects item/dash value
 var voteRadio = document.getElementsByClassName('view-vote')[0];
 voteRadio.addEventListener('click', function(e) {
   var theVote = e.target;
   if(theVote.id == 'the-vote') {
-    //theItem.food = theVote.value
-    //theItem.password = '1234'
     voteMatch(theVote.value)
     console.log(theItem)
   }
