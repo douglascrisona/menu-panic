@@ -2,6 +2,8 @@ var mealTypes = []
 var meal = {}
 var session = {}
 var loginName = {}
+var userName = {}
+
 var hide = document.getElementsByClassName('view-search')[0];
 
 var theArea = document.getElementsByTagName('body')[0];
@@ -48,17 +50,23 @@ function verifyUser(response) {
 
     var theSearch = document.getElementsByClassName('hide')[0]
     switchClass(theSearch, 'hide', 'view')
-
+    userName.name = response;
     viewVotes();
   }
 }
 
 // Generates Pending Votes link
 function viewVotes() {
+  var welcomeMessage = document.createElement('div');
+  welcomeMessage.textContent = 'Welcome, ' + userName.name
+  welcomeMessage.setAttribute('id', 'welcome-message')
+
   var viewVotes = document.createElement('div');
   viewVotes.textContent = 'Pending Votes'
   viewVotes.setAttribute('id', 'view-votes')
+
   document.getElementById('header').appendChild(viewVotes)
+  document.getElementById('header').appendChild(welcomeMessage)
 }
 
 
@@ -180,6 +188,7 @@ function showSearch() {
   showSearchBox.classList.add('view-search');
 }
 
+
 var checkedOption = [] //Stores selected items from the menu
 var theArea = document.getElementsByTagName('body')[0];
 theArea.addEventListener('click', function(e) {
@@ -205,18 +214,31 @@ theArea.addEventListener('click', function(e) {
   }
 })
 
-// Loads selected items to new vote page
+//Sends meal options for vote to back-end
+var theMeal = []
+var dishes = {}
 theArea.addEventListener('click', function(e) {
   var submitVote = e.target;
   if(submitVote.id == 'vote-button') {
 
+    dishes.first = checkedOption[0];
+    dishes.second = checkedOption[1];
+    dishes.third = checkedOption[2];
+    dishes.fourth = checkedOption[3];
+    dishes.fifth = checkedOption[4];
+    dishes.name = userName.name
+
+    theMeal.push(dishes)
+
     votePage(checkedOption)
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/choices')
-    xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.send(JSON.stringify(checkedOption))
     console.log(checkedOption)
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/meals')
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.send(JSON.stringify(theMeal))
+    //console.log(checkedOption)
 
     xhr.onload = function() {
       console.log(xhr.responseText)
@@ -226,6 +248,10 @@ theArea.addEventListener('click', function(e) {
     console.log('Vote sent')
   }
 })
+
+
+
+
 
 // Generates vote page elements
 function votePage(options) {

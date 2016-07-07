@@ -19,6 +19,9 @@ app.use('/session', session) //New
 var votes = require('./votes.js'); //New
 app.use('/votes', votes); //New
 
+var meals = require('./meals.js'); //New
+app.use('/meals', meals);//New
+
 
 var userID = [] // Provides user a sepcific ID for assigning selected menu items and voting
 var theChoices = []
@@ -62,6 +65,7 @@ app.get('/restaurants/', function(req, res) {
 // Will be removed
 // Should place selected items from menu in corresponding user object
 app.post('/choices/', function(req, res) {
+  console.log(req.body)
   //console.log(req.body)
   userID.forEach(function(userName) {
     profiles.forEach(function(name) {
