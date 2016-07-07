@@ -2,7 +2,23 @@ var express = require('express')
 var app = express()
 var jsonParser = require('body-parser').json();
 var request = require('request');
-var users = require('./users.js')
+var profiles = require('./profiles.js')
+var cookieParser = require('cookie-parser')();
+
+app.use(cookieParser)
+
+var user = require('./user.js'); // NEW
+app.use('/user', user); // NEW
+
+var login = require('./login.js'); //NEW
+app.use('/login', login); //NEW
+
+var session = require('./session.js'); //New
+app.use('/session', session) //New
+
+var votes = require('./votes.js'); //New
+app.use('/votes', votes); //New
+
 
 var userID = [] // Provides user a sepcific ID for assigning selected menu items and voting
 var theChoices = []
@@ -10,16 +26,7 @@ var theChoices = []
 app.use(jsonParser);
 app.use(express.static('./'))
 
-app.post('/login', function(req, res) {
-  users.forEach(function(user) {
-    if((req.body.name == user.name) && (req.body.password == user.password)) {
-      userID.push(req.body.name)
-      //userID.id = req.body.name
-      //userID.name = req.body.name
-      res.send(user.name)
-    }
-  });
-});
+
 
 app.get('/restaurants/', function(req, res) {
   var results = []
@@ -52,14 +59,15 @@ app.get('/restaurants/', function(req, res) {
   console.log(req.query)
 });
 
+// Will be removed
 // Should place selected items from menu in corresponding user object
 app.post('/choices/', function(req, res) {
   //console.log(req.body)
   userID.forEach(function(userName) {
-    users.forEach(function(name) {
+    profiles.forEach(function(name) {
       if(userName == name.name) {
         name.choices.forEach(function(item) {
-            item.items = req.body
+            item.items = req.body // Need unique identifier for menu choices
             console.log(item.items)
             //console.log(item.items)
             //console.log(name.name, name.choices)
@@ -75,9 +83,9 @@ app.post('/choices/', function(req, res) {
 });
 
 
-
+// Will be removed
 app.post('/vote', function(req, res) {
-  users.forEach(function(item) {
+  profiles.forEach(function(item) {
     item.choices.forEach(function(food) {
       food.items.forEach(function(dish) {
         if(req.body.food == dish) {

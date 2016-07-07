@@ -6,6 +6,17 @@ var hide = document.getElementsByClassName('view-search')[0];
 
 var theArea = document.getElementsByTagName('body')[0];
 
+// Displays home page for users with valid sessions
+window.addEventListener('load', function() {
+  var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/login/check/');
+    xhr.send();
+
+    xhr.onload = function() {
+      verifyUser(xhr.responseText) //Checks if session is valid and displays home page
+  }
+});
+
 // Logs user in, clears page and loads homepage
 var loginButton = document.getElementById('login');
 loginButton.addEventListener('click', function(e) {
@@ -20,19 +31,28 @@ loginButton.addEventListener('click', function(e) {
   xhr.send(JSON.stringify(verify));
 
   xhr.onload = function() {
-    if(xhr.responseText == name) {
-      var login = document.getElementsByClassName('login')[0]
-      switchClass(login, 'login', 'hide-login')
+    xhr.open('POST', '/login/check')
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.send()
 
-      var theSearch = document.getElementsByClassName('hide')[0]
-      switchClass(theSearch, 'hide', 'view')
-
-      viewVotes(); // Loads 'Pending Votes' linkt to navbar
-
-      session.id = xhr.responseText
+    xhr.onload = function() {
+      verifyUser(xhr.responseText)
     }
   }
-})
+});
+
+function verifyUser(response) {
+  if(response) {
+    var login = document.getElementsByClassName('login')[0]
+    switchClass(login, 'login', 'hide-login')
+
+    var theSearch = document.getElementsByClassName('hide')[0]
+    switchClass(theSearch, 'hide', 'view')
+
+    viewVotes();
+  }
+}
+
 // Generates Pending Votes link
 function viewVotes() {
   var viewVotes = document.createElement('div');
@@ -169,6 +189,7 @@ theArea.addEventListener('click', function(e) {
   }
 });
 
+// Supposed to create 'Pending Votes' page /** Vote Page **/
 theVoteOptions = []
 theArea.addEventListener('click', function(e) {
   var voteLink = e.target;
@@ -251,7 +272,7 @@ document.getElementsByClassName('view-vote')[0].addEventListener('click', functi
   }
 })
 
-// Selects item/dash value
+// Selects item/dish value
 var voteRadio = document.getElementsByClassName('view-vote')[0];
 voteRadio.addEventListener('click', function(e) {
   var theVote = e.target;
@@ -274,3 +295,9 @@ function loginCheck(username, password) {
   userCreds.password = password;
   return userCreds;
 }
+
+// User logs in
+// User searches for menu
+// User selects menu items and broadcasts votes
+// Second user overwrites the existing menu choices
+// Can't broadcast global vote
