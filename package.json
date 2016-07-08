@@ -18,6 +18,7 @@
   "homepage": "https://github.com/douglascrisona/menu-panic#readme",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
     "locu": "0.0.4",
     "oauth": "^0.9.14",
