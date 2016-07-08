@@ -7,9 +7,7 @@ var trackingId = require('./trackingId.js')
 var session = require('./session.js');
 var userSessions = require('./user-sessions.js')
 
-sessions  = [
-  { name: 'John', id: '12321321'},
-]
+
 
 
 login.use(cookieParser);
@@ -47,7 +45,8 @@ login.post('/check', function(req, res) {
         validSession.push(cookie.name)
         console.log('VALID')
         if (validSession.length > 0) {
-          res.send(id)
+          res.send(cookie.name)
+          console.log(cookie)
         }
       }
     })

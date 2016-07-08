@@ -43,6 +43,7 @@ loginButton.addEventListener('click', function(e) {
   }
 });
 
+// Function for checking if user has a valid session
 function verifyUser(response) {
   if(response) {
     var login = document.getElementsByClassName('login')[0]
@@ -84,7 +85,7 @@ console.log(loginName.name)
   xhr.send()
 
   xhr.onload = function() {
-    results = JSON.parse(xhr.responseText)
+    var results = JSON.parse(xhr.responseText)
     var theLocation = document.createElement('div');
 
     results.forEach(function(result) {
@@ -191,46 +192,33 @@ function showSearch() {
 
 var checkedOption = [] //Stores selected items from the menu
 var theArea = document.getElementsByTagName('body')[0];
-theArea.addEventListener('click', function(e) {
+theArea.addEventListener('click', function(e) {   //Pushes selected menu items into checkedOption
   var theNewOption = e.target;
   if(theNewOption.className === 'option') {
       checkedOption.push(theNewOption.value)
   }
 });
 
-// Supposed to create 'Pending Votes' page /** Vote Page **/
-theVoteOptions = []
-theArea.addEventListener('click', function(e) {
-  var voteLink = e.target;
-  if(voteLink.id == 'view-votes') {
-    //console.log(theVoteOptions)
-    theVoteOptions.forEach(function(item) {
-      console.log(item)
-      console.log(item.item)
-    });
-    switchClass(theArea, 'view', 'hide')
-    votePage(checkedOption)
 
-  }
-})
-
-//Sends meal options for vote to back-end
+//Sends meal options for vote to back-end (sends 'theMeal []' to /meals route )
 var theMeal = []
 var dishes = {}
 theArea.addEventListener('click', function(e) {
   var submitVote = e.target;
   if(submitVote.id == 'vote-button') {
 
-    dishes.first = checkedOption[0];
-    dishes.second = checkedOption[1];
-    dishes.third = checkedOption[2];
-    dishes.fourth = checkedOption[3];
-    dishes.fifth = checkedOption[4];
+    //dishes.first = checkedOption[0];
+    //dishes.second = checkedOption[1];
+    //dishes.third = checkedOption[2];
+    //dishes.fourth = checkedOption[3];
+    //dishes.fifth = checkedOption[4];
+    dishes.dish = checkedOption;
     dishes.name = userName.name
 
+    //theMeal.splice(0, theMeal.length)
     theMeal.push(dishes)
 
-    votePage(checkedOption)
+    //votePage(checkedOption)
 
     console.log(checkedOption)
 
@@ -251,54 +239,103 @@ theArea.addEventListener('click', function(e) {
 
 
 
+var theNewArea = document.getElementsByClassName('hide')[0]
 
-
-// Generates vote page elements
-function votePage(options) {
-  //var choices = document.createElement('div')
-  //choices.textContent = options
-  options.forEach(function(item) {
-    var itemBox = document.createElement('div')
-    itemBox.setAttribute('class', 'panel panel-default col-xs-3')
-    itemBox.textContent = item + ' '
-    itemBox.setAttribute('id', 'result-boxes')
-    itemBox.setAttribute('data-id', session.id)
-
-    var voteSelector = document.createElement('input');
-    voteSelector.setAttribute('type', 'radio')
-    voteSelector.setAttribute('class', 'pull-right')
-    voteSelector.setAttribute('id', 'the-vote')
-    voteSelector.setAttribute('name', 'vote')
-    voteSelector.setAttribute('value', item)
-    itemBox.appendChild(voteSelector);
-
-    document.getElementsByClassName('view-vote')[0].appendChild(itemBox)
-
-  })
-  var voteIt = document.createElement('button');
-  voteIt.textContent = 'VOTE'
-  voteIt.setAttribute('class', 'btn btn-primary')
-  voteIt.setAttribute('id', 'the-vote-button')
-  document.getElementsByClassName('view-vote')[0].appendChild(voteIt)
-
-  var newArea = document.getElementsByClassName('view')[0]
-  switchClass(newArea, 'view', 'hide-menu')
-}
-
-// Submits item/dish value to back-end
-document.getElementsByClassName('view-vote')[0].addEventListener('click', function(e) {
-  voteButton = e.target;
-  if(voteButton.id == 'the-vote-button') {
+// Creates Pending Vote Page
+var mealItems = []
+theVoteOptions = []
+theArea.addEventListener('click', function(e) {
+  var voteLink = e.target;
+  if(voteLink.id == 'view-votes') {
+    //console.log(theVoteOptions)
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/vote')
+    xhr.open('GET', '/meals')
     xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.send(JSON.stringify(theItem))
+    xhr.send()
 
+    xhr.onload = function() {
+      //console.log(xhr.responseText)
+      mealItems.push(JSON.parse(xhr.responseText))
+      //console.log(mealItems)
+      mealItems.forEach(function(item) {
+
+        //console.log(item.poster, item.selection.first, item.selection.second, item.selection.third)
+
+
+
+      })
+      newVotePage(mealItems)
+    }
+/**
+    theVoteOptions.forEach(function(item) {
+      console.log(item)
+      console.log(item.item)
+    });
+**/
+    switchClass(theNewArea, 'hide', 'votes')
+    //votePage(checkedOption)
 
   }
 })
 
-// Selects item/dish value
+
+// Creates a page that displays selected menu items for vote
+function newVotePage(items) {
+  var voteContainer = document.createElement('div');
+  voteContainer.setAttribute('class', 'panel panel-default')
+  voteContainer.setAttribute('id', 'vote-container')
+  items.forEach(function(item) {
+    var posterName = document.createElement('div');
+    posterName.textContent = item.poster + ' is PANICKING!';
+    posterName.setAttribute('class', 'panel-heading')
+    voteContainer.appendChild(posterName)
+    console.log(item.poster)
+    item.selection.forEach(function(dishes) {
+      dishes.forEach(function(dish) {
+        var itemBox = document.createElement('div')
+        //itemBox.setAttribute('class', 'panel panel-default col-xs-3');
+        itemBox.setAttribute('class', 'panel-body')
+        itemBox.textContent = dish
+        itemBox.setAttribute('id', 'result-boxes');
+        //itemBox.setAttribute('data-id', session.id)
+
+        voteContainer.appendChild(itemBox)
+
+        var voteSelector = document.createElement('input');
+        voteSelector.setAttribute('type', 'radio')
+        voteSelector.setAttribute('class', 'pull-right')
+        voteSelector.setAttribute('id', 'the-vote')
+        voteSelector.setAttribute('name', 'vote')
+        voteSelector.setAttribute('value', dish)
+        itemBox.appendChild(voteSelector);
+        //document.getElementsByClassName('view-vote')[0].appendChild(itemBox)
+      })
+
+
+    })
+    console.log(item.poster, item.selection.first, item.selection.second, item.selection.third)
+    //var itemBox = document.createElement('div')
+    //itemBox.setAttribute('class', 'panel panel-default col-xs-3')
+    //itemBox.textContent = item.selection.first + item.selection.second + item.selection.third
+    //itemBox.setAttribute('id', 'result-boxes')
+    //itemBox.setAttribute('data-id', session.id)
+
+    //document.getElementsByClassName('view-vote')[0].appendChild(itemBox)
+
+})
+var newVoteButton = document.createElement('button');
+newVoteButton.setAttribute('class', 'btn btn-primary');
+newVoteButton.textContent = 'Submit Vote'
+newVoteButton.setAttribute('id', 'new-vote')
+//voteContainer.appendChild(newVoteButton)
+document.getElementsByClassName('view-vote')[0].appendChild(voteContainer)
+document.getElementsByClassName('view-vote')[0].appendChild(newVoteButton)
+}
+
+
+
+
+// Selects item/dish value for voting
 var voteRadio = document.getElementsByClassName('view-vote')[0];
 voteRadio.addEventListener('click', function(e) {
   var theVote = e.target;
@@ -308,12 +345,14 @@ voteRadio.addEventListener('click', function(e) {
   }
 })
 
+
 function voteMatch(item) {
   theItem = {};
   theItem.food = item;
   //theItem.password = '1234'
   return theItem;
 }
+
 
 function loginCheck(username, password) {
   userCreds = {};

@@ -1,5 +1,5 @@
 body {
-  /*height: 100%;*/
+  height: 1200px;
   max-width: 100%;
   background-size: cover;
   background-repeat: no-repeat;
@@ -10,7 +10,6 @@ body {
 #header {
   height: 90px;
   background-color: rgba(0,0,0,0.4);
-/** background-color: rgba(96,148,206, .5); **/
   margin-bottom: 100px;
 }
 
@@ -23,7 +22,6 @@ body {
 }
 
 search {
-  /*padding-top: 10px;*/
   padding-left: 50px;
 }
 
@@ -111,4 +109,26 @@ search-icon {
 #view-votes:hover {
   color: gray;
   border-color: gray;
+}
+
+#welcome-message {
+  float: right;
+  margin-right: 290px;
+  margin-top: -25px;
+  color: white;
+  font-size: 20px;
+  text-decoration: underline;
+}
+
+.votes {
+  display: none;
+}
+
+#new-vote {
+  margin-left: 10%;
+}
+
+#vote-container {
+  margin-left: 10%;
+  margin-right: 10%
 }

@@ -8,89 +8,33 @@ var session = require('./session.js');
 var userSessions = require('./user-sessions.js')
 
 meals.use(jsonParser)
-/**
+
+
+// Temporary meal data object
 var mealOptions = {
   poster: 'Abe',
-    selection: {
-      dishes: { dish: 'Pizza'},
-      second: { dish: 'Hamburger' }
-    },
-  poster: 'John',
-    selection: {
-      first: { dish: 'Spaghetti'},
-      second: { dish: 'Rigatoni' },
-    }
+    selection: [],
+    votes: {}
 }
-**/
 
-
-
-
-var mealOptions = {
-  poster: 'Abe',
-    selection: {
-      first: { dish: 'Pizza' },
-      second: { dish: 'Burger'}
-    }
-}
 
 var theMeals = []
-
 meals.post('/', function(req, res) {
- //console.log(mealOptions)
- //console.log(mealOptions.selection.first.dish)
  theMeals.push(req.body)
- //console.log(theMeals)
  theMeals.forEach(function(items) {
 
-   //console.log(items)
-   items.forEach(function(dishes) {
-     mealOptions.selection.first = dishes.first;
-     mealOptions.selection.second = dishes.second;
-     mealOptions.selection.third = dishes.third;
-     mealOptions.selection.fourth = dishes.fourth;
-     mealOptions.selection.fifth = dishes.fifth;
-     mealOptions.poster = dishes.name;
+   items.forEach(function(dish) {
+     mealOptions.selection.push(dish.dish)
+     mealOptions.poster = dish.name
    })
  })
+res.send(mealOptions)
 
- /**
- theMeals.forEach(function(item) {
-   console.log(item)
-   mealOptions.poster = item.name;
-   mealOptions.selection.first.dish = item.primary
-   mealOptions.selection.first.dish = item.secondary
-   //console.log(mealOptions.poster)
+})
 
-
- })
-    **/
- console.log(mealOptions)
-
-
-
-/**
-  //console.log(req.body)
-  theMeals.push(req.body)
-  //console.log(theMeals)
-  theMeals.forEach(function(dish){
-    //console.log(dish)
-    dish.forEach(function(item) {
-      //console.log(item)
-      mealOptions.poster = item.name
-
-
-    })
-
-  })
-
-  //mealOptions.poster = req.body.poster;
-  //mealOptions.selection.first = req.body.dish1;
-  //mealOptions.selection.second = req.body.dish2;
-  //console.log(mealOptions)
+meals.get('/', function(req, res) {
   console.log(mealOptions)
-**/
-  res.send(theMeals)
+  res.send(mealOptions)
 })
 
 
