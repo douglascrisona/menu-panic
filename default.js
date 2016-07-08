@@ -19,6 +19,10 @@ window.addEventListener('load', function() {
   }
 });
 
+document.getElementById('logo').addEventListener('click', function() {
+  window.location.reload()
+})
+
 // Logs user in, clears page and loads homepage
 var loginButton = document.getElementById('login');
 loginButton.addEventListener('click', function(e) {
@@ -217,6 +221,9 @@ theArea.addEventListener('click', function(e) {
 
     //theMeal.splice(0, theMeal.length)
     theMeal.push(dishes)
+    window.location.reload()
+    //newVotePage(mealItems)
+    console.log(mealItems)
 
     //votePage(checkedOption)
 
@@ -237,6 +244,14 @@ theArea.addEventListener('click', function(e) {
   }
 })
 
+function voteCompleteMessage() {
+  var theMessageArea = document.getElementsByTagName('body')[0]
+  var success = document.createElement('div')
+  success.textContent = 'Your choices were submitted.  Help is on the Way'
+
+  theMessageArea.appendChild(success)
+
+}
 
 
 var theNewArea = document.getElementsByClassName('hide')[0]
