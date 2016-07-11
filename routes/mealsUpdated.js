@@ -8,13 +8,6 @@ var userSessions = require('../user-sessions.js')
 
 mealVotes.use(jsonParser)
 
-var id = {
-  id: function() {
-    return Math.floor(Math.random() * 1000)
-  }
-}
-
-
 var meals = {
  data: [
    {
@@ -38,7 +31,11 @@ var meals = {
  ]
 }
 
-
+var id = {
+  id: function() {
+    return Math.floor(Math.random() * 1000)
+  }
+}
 
 // Get a list of all current meals.
 mealVotes.get('/', function(req, res) {
@@ -52,7 +49,6 @@ mealVotes.post('/', function(req, res) {
  theMeal.id = id.id()
  theMeal.poster = req.body.poster
  theMeal.options = [];
- //theMeal.options.push(req.body.dishes)
  theMeal.options.push(req.body.dishes[0])
  theMeal.options.push(req.body.dishes[1])
  theMeal.options.push(req.body.dishes[2])
@@ -61,16 +57,9 @@ mealVotes.post('/', function(req, res) {
  meals.data.push(theMeal);
 
  res.send(meals)
- //console.log(meals)
 });
 
 
-
-
-
-
-
-/**
 // Vote on an existing meal.
 mealVotes.put('/vote/:id/:option', function(req, res) {
  //...they haven't already voted
@@ -96,5 +85,5 @@ mealVotes.put('/vote/:id/:option', function(req, res) {
    });
  }
 });
-**/
+
 module.exports = mealVotes;

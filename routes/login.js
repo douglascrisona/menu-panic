@@ -7,17 +7,11 @@ var trackingId = require('../trackingId.js')
 var session = require('./session.js');
 var userSessions = require('../user-sessions.js')
 
-
-
-
 login.use(cookieParser);
 login.use(jsonParser);
 
 
-
-// Try to login
 login.post('/', function(req, res) {
-
   profiles.forEach(function(user) {
     if((req.body.name == user.name) && (req.body.password == user.password)) {
       var session = {};
@@ -38,7 +32,6 @@ var validSession = []
 
 login.post('/check', function(req, res) {
     var id = req.cookies.trackingID
-
     console.log(req.cookies.trackingID)
     userSessions.sessions.forEach(function(cookie) {
       if(id == cookie.id) {
@@ -51,7 +44,7 @@ login.post('/check', function(req, res) {
       }
     })
 
-  //res.send(id)
+  res.send()
 })
 
 

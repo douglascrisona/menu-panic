@@ -6,21 +6,13 @@ var cookieParser = require('cookie-parser')();
 
 session.use(cookieParser);
 
-// Get the session for the current user.
 session.get('/:user', function(req, res) {
-  //console.log('testing')
-console.log(req.cookies);
-console.log(req.params.user)
-
-
   userSessions.sessions.forEach(function(user) {
 
     if(user.id == req.cookies.trackingID) {
       console.log(user.name)
     }
   })
-
-
   res.send()
 });
 
