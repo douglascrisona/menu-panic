@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="default.css">
+  </head>
+
+  <body>
+    <header id="header">
+      <div id="logo"><img src="/images/logo-2.png"</img></div>
+    </header>
+    <div class="row">
+      <div class="col-md-1"></div>
+    <!--  <div class="panel panel-default col-sm-1" id="search-icon">
+        <h4 id="click">Search Again</h4>
+      </div> -->
+    </div>
+    <div class="login">
+      <div class="col-md-4"></div>
+      <div class="panel panel-default col-md-3">
+        <form class="panel-body">
+           <fieldset class="form-group">
+             <label for="name">Username</label>
+             <input type="name" class="form-control" id="username" placeholder="Enter username">
+           </fieldset>
+           <fieldset class="form-group">
+             <label for="password">Password</label>
+             <input type="password" class="form-control" id="password" placeholder="Password">
+           </fieldset>
+           <button type="button" class="btn btn-primary" id="login">Login</button>
+        </form>
+      </div>
+    </div>
+    <div class="hide">
+      <div class="col-md-2"></div>
+      <div class="view-search">
+        <div class="row"></div>
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <div class="panel panel-default" style="min-height: 300px">
+              <div class="panel-heading" id="search-title"><h3>Search a Restaurant</h3></div>
+              <div class="panel-body"
+                <form id="search-form">
+                  <fieldset class="form-group">
+                    <label for="nameSearch">Restaurant Name</label>
+                    <input type="text" class="form-control" id="search" placeholder="Wilma's Patio, Chipotle, etc.">
+                    <small class="text-muted">Find your restaurant!</small>
+                  </fieldset>
+                  <fieldset class="form-group">
+                    <label for="zipCodeSearch">Zip Code</label>
+                    <input type="name" class="form-control" id="postal" placeholder="92662">
+                    <small class="text-muted">Enter the Zip Code of your Restaurant</small>
+                  </fieldset>
+                  <button type="submit" class="btn btn-primary" id="search-button">Stop Panicking!</button>
+                </form>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="view-vote">
+
+    </div>
+      <div class="hide-results">
+        <div class="row">
+          <div class="col-md-4"></div>
+          <!--
+          <div class="col-md-4">
+            <div class="panel panel-default" style="min-height: 150px" id="results-box">
+              <div class="panel-heading"><h3>Is this what you were looking for?</h3></div>
+              <div class="panel-body" id="restaurant-info"></div>
+              <div class="col-md-2"></div>
+              <div class='panel-body'><button type="submit" class="btn btn-primary pull-right" id="menu-button">View Menu</button></div>
+            </div>
+        </div>
+      -->
+      </div>
+    </div>
+    <div class="hide-menu">
+    </div>
+    <script src="default.js"></script>
+  </body>
+</html>
