@@ -22,7 +22,6 @@ loginButton.addEventListener('click', function(e) {
   var password = document.getElementById('password').value;
   var verify = loginCheck(name, password);
 
-
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/login')
   xhr.setRequestHeader('Content-Type', 'application/json')
@@ -85,7 +84,6 @@ var searchZip = document.getElementById('postal')
     results.forEach(function(result) {
       result.venues.forEach(function(venue) {
         theLocation.appendChild(theVenue(venue));
-
       });
 
       result.venues[0].menus.forEach(function(menu){
@@ -173,15 +171,15 @@ function switchClass(name, remove, add) {
   name.classList.add(add)
 }
 
-var newCheckedOption = {}
-var checkedOption = []
+var theMeal = {}
+var checkedItems = []
 var theArea = document.getElementsByTagName('body')[0];
 theArea.addEventListener('click', function(e) {
-  var theNewOption = e.target;
-  if(theNewOption.className === 'option') {
-      checkedOption.push(theNewOption.value)
-      newCheckedOption.dishes = checkedOption
-      newCheckedOption.poster = userName.name
+  var menuItem = e.target;
+  if(menuItem.className === 'option') {
+      checkedItems.push(menuItem.value)
+      theMeal.dishes = checkedItems
+      theMeal.poster = userName.name
   }
 });
 
@@ -193,7 +191,7 @@ theArea.addEventListener('click', function(e) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/mealVotes')
     xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.send(JSON.stringify(newCheckedOption))
+    xhr.send(JSON.stringify(theMeal))
 
     window.location.reload()
 
@@ -221,8 +219,9 @@ theArea.addEventListener('click', function(e) {
       pendingVotes = JSON.parse(xhr.responseText)
       pendingVotes.data.forEach(function(details) {
         voteArea.appendChild(posterName(details.poster))
+
         details.options.forEach(function(dishes) {
-        voteArea.appendChild(dishOptions(dishes))
+          voteArea.appendChild(dishOptions(dishes))
         });
       });
     };
