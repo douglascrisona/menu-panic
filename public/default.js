@@ -1,21 +1,14 @@
-var mealTypes = []
-var meal = {}
-var session = {}
-var loginName = {}
 var userName = {}
-
 var hide = document.getElementsByClassName('view-search')[0];
-
 var theArea = document.getElementsByTagName('body')[0];
 
-// Displays home page for users with valid sessions
 window.addEventListener('load', function() {
   var xhr = new XMLHttpRequest();
     xhr.open('POST', '/login/check/');
     xhr.send();
 
     xhr.onload = function() {
-      verifyUser(xhr.responseText) //Checks if session is valid and displays home page
+      verifyUser(xhr.responseText)
   }
 });
 
@@ -23,13 +16,12 @@ document.getElementById('logo').addEventListener('click', function() {
   window.location.reload()
 })
 
-// Logs user in, clears page and loads homepage
 var loginButton = document.getElementById('login');
 loginButton.addEventListener('click', function(e) {
   var name = document.getElementById('username').value;
   var password = document.getElementById('password').value;
   var verify = loginCheck(name, password);
-  loginName.name = name;
+
 
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/login')
@@ -47,7 +39,6 @@ loginButton.addEventListener('click', function(e) {
   }
 });
 
-// Function for checking if user has a valid session
 function verifyUser(response) {
   if(response) {
     var login = document.getElementsByClassName('login')[0]
@@ -60,7 +51,7 @@ function verifyUser(response) {
   }
 }
 
-// Generates Pending Votes link
+
 function viewVotes() {
   var welcomeMessage = document.createElement('div');
   welcomeMessage.textContent = 'Welcome, ' + userName.name
@@ -75,12 +66,11 @@ function viewVotes() {
 }
 
 
-// Searches for restaurant and loads menu
 var button = document.getElementById('search-button');
 button.addEventListener('click', function(e) {
 var searchTerm = document.getElementById('search')
 var searchZip = document.getElementById('postal')
-console.log(loginName.name)
+
 
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/restaurants/?name=' + searchTerm.value + '&' + 'zip=' + searchZip.value );
@@ -113,17 +103,16 @@ console.log(loginName.name)
         });
       });
     });
-    menuDisplay(theLocation)  // Creates menu element on page
+    menuDisplay(theLocation)
   };
 });
 
 
-// Generates Menu on Results Page
 function theVenue(data) {
   var theVenue = document.createElement('div');
   theVenue.setAttribute('id', 'restaurant-name')
   theVenue.setAttribute('class', 'list-group-item')
-  theVenue.textContent = data.name; /**+ " | " + data.location.address1**/
+  theVenue.textContent = data.name;
   return theVenue;
 }
 
@@ -152,7 +141,7 @@ function theSubSection(data) {
 
 function theContent(data) {
   var theContent = document.createElement('div');
-  theContent.textContent = data.name /**+ " description: " + data.description**/;
+  theContent.textContent = data.name;
   theContent.setAttribute('class', 'list-group-item')
   theContent.setAttribute('id', 'menu-items')
 
@@ -179,23 +168,15 @@ function menuDisplay(theLocation) {
 }
 
 
-// Clears Page
 function switchClass(name, remove, add) {
   name.classList.remove(remove);
   name.classList.add(add)
 }
 
-// Should enable new search
-function showSearch() {
-  var showSearchBox = document.getElementsByClassName('hide-search')[0];
-  showSearchBox.classList.remove('hide-search');
-  showSearchBox.classList.add('view-search');
-}
-
 var newCheckedOption = {}
 var checkedOption = []
 var theArea = document.getElementsByTagName('body')[0];
-theArea.addEventListener('click', function(e) {   //Pushes selected menu items into checkedOption
+theArea.addEventListener('click', function(e) {
   var theNewOption = e.target;
   if(theNewOption.className === 'option') {
       checkedOption.push(theNewOption.value)
@@ -204,7 +185,6 @@ theArea.addEventListener('click', function(e) {   //Pushes selected menu items i
   }
 });
 
-var theMeal = []
 var dishes = {}
 theArea.addEventListener('click', function(e) {
   var submitVote = e.target;
@@ -224,20 +204,9 @@ theArea.addEventListener('click', function(e) {
   }
 })
 
-function voteCompleteMessage() {
-  var theMessageArea = document.getElementsByTagName('body')[0]
-  var success = document.createElement('div')
-  success.textContent = 'Your choices were submitted.  Help is on the Way'
-
-  theMessageArea.appendChild(success)
-
-}
-
-
 var theNewArea = document.getElementsByClassName('hide')[0]
-
-var mealItems = []
 var pendingVotes;
+
 theArea.addEventListener('click', function(e) {
   var voteLink = e.target;
   if(voteLink.id == 'view-votes') {
@@ -269,7 +238,6 @@ theArea.addEventListener('click', function(e) {
     };
     switchClass(theNewArea, 'hide', 'votes')
   }
-
 });
 
 
@@ -296,7 +264,6 @@ function mealBox(names, items) {
 function posterName(data) {
   var posterName = document.createElement('div');
   posterName.textContent = data;
-  //posterName.setAttribute('class','panel panel-default');
   posterName.setAttribute('id','poster-name');
   posterName.setAttribute('class', 'h3')
   return posterName;
@@ -322,24 +289,6 @@ function dishOptions(data) {
   return dishBox;
 }
 
-function testBox() {
-  var testBox = document.createElement('div');
-  testBox.setAttribute('id', 'test-box')
-  return testBox;
-}
-
-
-var newVoteButton = document.createElement('button');
-newVoteButton.setAttribute('class', 'btn btn-primary');
-newVoteButton.textContent = 'Submit Vote'
-newVoteButton.setAttribute('id', 'new-vote')
-//voteContainer.appendChild(newVoteButton)
-document.getElementsByClassName('view-vote')[0].appendChild(voteContainer)
-document.getElementsByClassName('view-vote')[0].appendChild(newVoteButton)
-
-
-
-// Selects item/dish value for voting
 var voteRadio = document.getElementsByClassName('view-vote')[0];
 voteRadio.addEventListener('click', function(e) {
   var theVote = e.target;
@@ -349,14 +298,12 @@ voteRadio.addEventListener('click', function(e) {
   }
 })
 
-
 function voteMatch(item) {
   theItem = {};
   theItem.food = item;
   //theItem.password = '1234'
   return theItem;
 }
-
 
 function loginCheck(username, password) {
   userCreds = {};
