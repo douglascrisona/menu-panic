@@ -205,34 +205,24 @@ theArea.addEventListener('click', function(e) {
 })
 
 var theNewArea = document.getElementsByClassName('hide')[0]
+var voteArea = document.getElementsByClassName('view-vote')[0]
 var pendingVotes;
 
 theArea.addEventListener('click', function(e) {
   var voteLink = e.target;
   if(voteLink.id == 'view-votes') {
-    //console.log(theVoteOptions)
+
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/mealVotes')
     xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.send()
 
     xhr.onload = function() {
-      var items = {}
-
-      var mealContainer = document.createElement('div');
-      mealContainer.setAttribute('class', 'panel panel-default');
-      mealContainer.setAttribute('id', 'meal-container')
-
-      var voteContainer = document.createElement('div');
-      voteContainer.setAttribute('class', 'panel panel-default')
-      voteContainer.setAttribute('id', 'vote-container')
-
       pendingVotes = JSON.parse(xhr.responseText)
       pendingVotes.data.forEach(function(details) {
-        document.getElementsByClassName('view-vote')[0].appendChild(posterName(details.poster))
-
+        voteArea.appendChild(posterName(details.poster))
         details.options.forEach(function(dishes) {
-        document.getElementsByClassName('view-vote')[0].appendChild(dishOptions(dishes))
+        voteArea.appendChild(dishOptions(dishes))
         });
       });
     };
@@ -240,26 +230,6 @@ theArea.addEventListener('click', function(e) {
   }
 });
 
-
-function mealBox(names, items) {
-  var posterName = document.createElement('div');
-  posterName.textContent = names;
-
-  var submitReview = document.createElement('div');
-  submitReview.textContent = 'Submit Review'
-
-  var theMeals = document.createElement('div');
-  theMeals.textContent = items;
-
-  var newBox = document.createElement('div');
-  newBox.setAttribute('class', 'panel panel-default');
-
-  newBox.appendChild(posterName);
-  newBox.appendChild(submitReview);
-  newBox.appendChild(theMeals);
-
-  return newBox;
-}
 
 function posterName(data) {
   var posterName = document.createElement('div');
@@ -282,8 +252,8 @@ function dishOptions(data) {
   var dishBox = document.createElement('div');
   dishBox.setAttribute('class', 'panel panel-default');
   dishBox.setAttribute('id', 'dish-box');
-  dishBox.appendChild(dishes);
 
+  dishBox.appendChild(dishes);
   dishBox.appendChild(voteSelector);
 
   return dishBox;
@@ -301,7 +271,6 @@ voteRadio.addEventListener('click', function(e) {
 function voteMatch(item) {
   theItem = {};
   theItem.food = item;
-  //theItem.password = '1234'
   return theItem;
 }
 
