@@ -2,6 +2,9 @@ var express = require('express')
 var app = express()
 var jsonParser = require('body-parser').json();
 var request = require('request');
+var cool = require('cool-ascii-faces');
+
+app.set('port', (process.env.PORT || 5000));
 //var profiles = require('./profiles.js')
 var cookieParser = require('cookie-parser')();
 
@@ -29,5 +32,17 @@ app.use(jsonParser);
 app.use(express.static('./public'));
 
 
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 
-app.listen(8080);
+app.get('/', function(request, response) {
+  response.render('pages/index')
+});
+
+app.get('/cool', function(request, response) {
+  response.send(cool());
+});
+
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});

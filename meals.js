@@ -4,7 +4,7 @@ var meals = express.Router();
 var cookieParser = require('cookie-parser')();
 var jsonParser = require('body-parser').json();
 var trackingId = require('./trackingId.js')
-var session = require('./session.js');
+var session = require('./routes/session.js');
 var userSessions = require('./user-sessions.js')
 
 meals.use(jsonParser)
@@ -36,6 +36,8 @@ meals.get('/', function(req, res) {
   console.log(mealOptions)
   res.send(mealOptions)
 })
+
+
 
 
 

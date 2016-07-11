@@ -17,13 +17,8 @@ user.post('/:user/:password', function(req, res) {
   var newUser = {name: req.params.user, password: req.params.password}
   profiles.push(newUser)
   console.log(profiles)
-/**
-  profiles.forEach(function(user) {
-    if(user.name !== req.params.user) {
-      profiles.push({name: req.params.user, password: req.params.password})
-    }
-  })
-**/
+
+
   res.send(newUser)
 });
 
