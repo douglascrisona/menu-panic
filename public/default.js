@@ -185,7 +185,6 @@ function switchClass(name, remove, add) {
   name.classList.add(add)
 }
 
-
 // Should enable new search
 function showSearch() {
   var showSearchBox = document.getElementsByClassName('hide-search')[0];
@@ -195,9 +194,6 @@ function showSearch() {
 
 var newCheckedOption = {}
 var checkedOption = []
-
-/** Confusion Starts **/
- //Stores selected items from the menu
 var theArea = document.getElementsByTagName('body')[0];
 theArea.addEventListener('click', function(e) {   //Pushes selected menu items into checkedOption
   var theNewOption = e.target;
@@ -208,8 +204,6 @@ theArea.addEventListener('click', function(e) {   //Pushes selected menu items i
   }
 });
 
-
-//Sends meal options for vote to back-end (sends 'theMeal []' to /meals route )
 var theMeal = []
 var dishes = {}
 theArea.addEventListener('click', function(e) {
@@ -224,8 +218,6 @@ theArea.addEventListener('click', function(e) {
     window.location.reload()
 
     xhr.onload = function() {
-      //console.log(xhr.responseText)
-      //theVoteOptions.push(JSON.parse(xhr.responseText))
     }
 
     console.log('Vote sent')
@@ -244,9 +236,7 @@ function voteCompleteMessage() {
 
 var theNewArea = document.getElementsByClassName('hide')[0]
 
-// Creates Pending Vote Page
 var mealItems = []
-//theVoteOptions = []
 var pendingVotes;
 theArea.addEventListener('click', function(e) {
   var voteLink = e.target;
@@ -271,11 +261,9 @@ theArea.addEventListener('click', function(e) {
       pendingVotes = JSON.parse(xhr.responseText)
       pendingVotes.data.forEach(function(details) {
         document.getElementsByClassName('view-vote')[0].appendChild(posterName(details.poster))
-        console.log(details.id);
-        console.log(details.poster);
+
         details.options.forEach(function(dishes) {
         document.getElementsByClassName('view-vote')[0].appendChild(dishOptions(dishes))
-          console.log(dishes)
         });
       });
     };
@@ -289,6 +277,9 @@ function mealBox(names, items) {
   var posterName = document.createElement('div');
   posterName.textContent = names;
 
+  var submitReview = document.createElement('div');
+  submitReview.textContent = 'Submit Review'
+
   var theMeals = document.createElement('div');
   theMeals.textContent = items;
 
@@ -296,7 +287,8 @@ function mealBox(names, items) {
   newBox.setAttribute('class', 'panel panel-default');
 
   newBox.appendChild(posterName);
-  newBox.appendChild(theMeals)
+  newBox.appendChild(submitReview);
+  newBox.appendChild(theMeals);
 
   return newBox;
 }
@@ -316,16 +308,13 @@ function dishOptions(data) {
   dishes.setAttribute('id', 'dish-options');
 
   var voteSelector = document.createElement('input');
-  voteSelector.setAttribute('type', 'radio')
-  //voteSelector.setAttribute('class', 'pull-right')
-  voteSelector.setAttribute('id', 'the-vote')
-  voteSelector.setAttribute('name', 'vote')
-  //voteSelector.setAttribute('value', dish)
-
+  voteSelector.setAttribute('type', 'radio');
+  voteSelector.setAttribute('id', 'the-vote');
+  voteSelector.setAttribute('name', 'vote');
 
   var dishBox = document.createElement('div');
-  dishBox.setAttribute('class', 'panel panel-default')
-  dishBox.setAttribute('id', 'dish-box')
+  dishBox.setAttribute('class', 'panel panel-default');
+  dishBox.setAttribute('id', 'dish-box');
   dishBox.appendChild(dishes);
 
   dishBox.appendChild(voteSelector);
@@ -340,51 +329,6 @@ function testBox() {
 }
 
 
-
-// Creates a page that displays selected menu items for vote
-function newVotePage(items) {
-  var voteContainer = document.createElement('div');
-  voteContainer.setAttribute('class', 'panel panel-default')
-  voteContainer.setAttribute('id', 'vote-container')
-  items.forEach(function(item) {
-    var posterName = document.createElement('div');
-    posterName.textContent = item.poster + ' is PANICKING!';
-    posterName.setAttribute('class', 'panel-heading')
-    voteContainer.appendChild(posterName)
-    console.log(item.poster)
-    item.selection.forEach(function(dishes) {
-      dishes.forEach(function(dish) {
-        var itemBox = document.createElement('div')
-        //itemBox.setAttribute('class', 'panel panel-default col-xs-3');
-        itemBox.setAttribute('class', 'panel-body')
-        itemBox.textContent = dish
-        itemBox.setAttribute('id', 'result-boxes');
-        //itemBox.setAttribute('data-id', session.id)
-
-        voteContainer.appendChild(itemBox)
-
-        var voteSelector = document.createElement('input');
-        voteSelector.setAttribute('type', 'radio')
-        voteSelector.setAttribute('class', 'pull-right')
-        voteSelector.setAttribute('id', 'the-vote')
-        voteSelector.setAttribute('name', 'vote')
-        voteSelector.setAttribute('value', dish)
-        itemBox.appendChild(voteSelector);
-        //document.getElementsByClassName('view-vote')[0].appendChild(itemBox)
-      })
-
-
-    })
-    console.log(item.poster, item.selection.first, item.selection.second, item.selection.third)
-    //var itemBox = document.createElement('div')
-    //itemBox.setAttribute('class', 'panel panel-default col-xs-3')
-    //itemBox.textContent = item.selection.first + item.selection.second + item.selection.third
-    //itemBox.setAttribute('id', 'result-boxes')
-    //itemBox.setAttribute('data-id', session.id)
-
-    //document.getElementsByClassName('view-vote')[0].appendChild(itemBox)
-
-})
 var newVoteButton = document.createElement('button');
 newVoteButton.setAttribute('class', 'btn btn-primary');
 newVoteButton.textContent = 'Submit Vote'
@@ -392,8 +336,6 @@ newVoteButton.setAttribute('id', 'new-vote')
 //voteContainer.appendChild(newVoteButton)
 document.getElementsByClassName('view-vote')[0].appendChild(voteContainer)
 document.getElementsByClassName('view-vote')[0].appendChild(newVoteButton)
-}
-
 
 
 
@@ -422,9 +364,3 @@ function loginCheck(username, password) {
   userCreds.password = password;
   return userCreds;
 }
-
-// User logs in
-// User searches for menu
-// User selects menu items and broadcasts votes
-// Second user overwrites the existing menu choices
-// Can't broadcast global vote

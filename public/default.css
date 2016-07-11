@@ -22,10 +22,6 @@ body {
 
 }
 
-search {
-  padding-left: 50px;
-}
-
 #search-title {
   padding-left: 20%;
 }
@@ -40,11 +36,6 @@ search {
 
 .hide-results {
   display: none;
-}
-
-search-icon {
-  margin-top: -100px;
-
 }
 
 .hide-menu {
@@ -142,6 +133,8 @@ height: 20px;
 
 #dish-box {
   /*margin-top: -10px;*/
+  margin-left: 10%;
+  margin-right: 10%;
   margin-bottom: -5px;
 }
 
