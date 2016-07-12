@@ -221,7 +221,7 @@ theArea.addEventListener('click', function(e) {
         voteArea.appendChild(posterName(details.poster))
 
         details.options.forEach(function(dishes) {
-          voteArea.appendChild(dishOptions(dishes))
+          voteArea.appendChild(dishOptions(dishes, details.id))
         });
       });
     };
@@ -232,24 +232,28 @@ theArea.addEventListener('click', function(e) {
 
 function posterName(data) {
   var posterName = document.createElement('div');
-  posterName.textContent = data;
+  posterName.textContent = data + "'s meal";
   posterName.setAttribute('id','poster-name');
   posterName.setAttribute('class', 'h3')
   return posterName;
 }
 
-function dishOptions(data) {
+function dishOptions(data, id) {
   var dishes = document.createElement('div');
   dishes.textContent = data;
   dishes.setAttribute('id', 'dish-options');
+  dishes.setAttribute('class', 'h3')
+  //dishes.setAttribute('value', id)
 
   var voteSelector = document.createElement('input');
   voteSelector.setAttribute('type', 'radio');
-  voteSelector.setAttribute('id', 'the-vote');
+  //voteSelector.setAttribute('id', 'the-vote');
+  voteSelector.setAttribute('id', data)
+  voteSelector.setAttribute('value', id)
   voteSelector.setAttribute('name', 'vote');
 
   var dishBox = document.createElement('div');
-  dishBox.setAttribute('class', 'panel panel-default');
+  dishBox.setAttribute('class', 'list-group-item');
   dishBox.setAttribute('id', 'dish-box');
 
   dishBox.appendChild(dishes);
@@ -261,15 +265,24 @@ function dishOptions(data) {
 var voteRadio = document.getElementsByClassName('view-vote')[0];
 voteRadio.addEventListener('click', function(e) {
   var theVote = e.target;
-  if(theVote.id == 'the-vote') {
-    voteMatch(theVote.value)
+  if(theVote.name == 'vote') {
+    voteMatch(theVote.value, theVote.id)
     console.log(theItem)
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('PUT', '/mealVotes/vote/' + theItem.id + '/' + theItem.option + '/' + theItem.name);
+    xhr.send();
+
   }
 })
 
-function voteMatch(item) {
+
+
+function voteMatch(value, item) {
   theItem = {};
-  theItem.food = item;
+  theItem.id = value;
+  theItem.option = item;
+  theItem.name = userName.name
   return theItem;
 }
 

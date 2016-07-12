@@ -31,6 +31,7 @@ var meals = {
  ]
 }
 
+
 var id = {
   id: function() {
     return Math.floor(Math.random() * 1000)
@@ -40,7 +41,7 @@ var id = {
 // Get a list of all current meals.
 mealVotes.get('/', function(req, res) {
  res.send(meals);
- console.log(meals)
+ //console.log(meals)
 });
 
 // Add a new meal to vote on.
@@ -49,41 +50,30 @@ mealVotes.post('/', function(req, res) {
  theMeal.id = id.id()
  theMeal.poster = req.body.poster
  theMeal.options = [];
- theMeal.options.push(req.body.dishes[0])
- theMeal.options.push(req.body.dishes[1])
- theMeal.options.push(req.body.dishes[2])
+ theMeal.options.push(req.body.dishes[0]);
+ theMeal.options.push(req.body.dishes[1]);
+ theMeal.options.push(req.body.dishes[2]);
  theMeal.voters = [];
- theMeal.voters.push(req.body.voters)
+ theMeal.voters.push(req.body.voters);
  meals.data.push(theMeal);
 
- res.send(meals)
+ res.send(meals);
 });
-
 
 // Vote on an existing meal.
-mealVotes.put('/vote/:id/:option', function(req, res) {
- //...they haven't already voted
- var voted = false;
- meals.data.forEach(function(meal) {
-   if (meal.id == req.params.id) {
-     meal.voters.forEach(function(voter) {
-       if (voter.name == session.getName()) {
-         voted = true;
-       }
-     });
-   }
- });
-
- if (!voted) {
-   //... find the correct meal
-   meals.data.forEach(function(meal) {
-     if (meal.id == req.params.id) {
-       var name = session.getName();
-       var option = req.params.option;
-       meal.voters.push( { name: name, option });
-     }
-   });
- }
+mealVotes.put('/vote/:id/:option/:name', function(req, res) {
+var matched = { count: 0 }
+  meals.data.forEach(function(meal) {
+    if(meal.id == req.params.id) {
+      var name = req.params.name;
+      var option = req.params.option;
+      meal.voters.push( { name: name, vote: option });
+    }
+  });
+  console.log(matched)
+  res.send(meals)
 });
+
+
 
 module.exports = mealVotes;
