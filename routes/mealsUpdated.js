@@ -13,7 +13,7 @@ var meals = {
    {
      id: 1,
      poster: "John",
-     options: ['Spaghetti & Meatballs', 'Ribs'],
+     options: [{display: 'Spaghetti & Meatballs', id: 1}, {display: 'Ribs', id: 2}],
      voters: [
        { name: 'Larry', vote: 'ribs' },
        { name: 'John' , vote: 'steak' },
@@ -22,7 +22,7 @@ var meals = {
    {
      id: 2,
      poster: "Larry",
-     options: ['Pasta Primavera', 'Salmon'],
+     options: [{display: 'Pasta Primavera', id: 1}, {display: 'Salmon', id: 2}],
      voters: [
        { name: 'Larry', vote: 'ribs' },
        { name: 'John' , vote: 'steak' },
@@ -30,6 +30,7 @@ var meals = {
    }
  ]
 }
+
 
 
 var id = {
@@ -50,9 +51,9 @@ mealVotes.post('/', function(req, res) {
  theMeal.id = id.id()
  theMeal.poster = req.body.poster
  theMeal.options = [];
- theMeal.options.push(req.body.dishes[0]);
- theMeal.options.push(req.body.dishes[1]);
- theMeal.options.push(req.body.dishes[2]);
+ theMeal.options.push({display: req.body.dishes[0], id: 1})
+ theMeal.options.push({display: req.body.dishes[1], id: 2})
+ theMeal.options.push({display: req.body.dishes[2], id: 3})
  theMeal.voters = [];
  theMeal.voters.push(req.body.voters);
  meals.data.push(theMeal);
