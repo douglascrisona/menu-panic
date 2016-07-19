@@ -13,7 +13,7 @@ var meals = {
    {
      id: 1,
      poster: "John",
-     options: [{display: 'Spaghetti & Meatballs', id: 1}, {display: 'Ribs', id: 2}],
+     options: [{display: 'Spaghetti & Meatballs', id: 1, score: 0}, {display: 'Ribs', id: 2, score: 0}],
      voters: [
        { name: 'Jose', vote: 2 },
        { name: 'Nancy', vote: 1 },
@@ -21,26 +21,28 @@ var meals = {
        { name: 'Abe', vote: 1 },
        { name: 'John' , vote: 1 },
      ]
+     //votes: []
    },
    {
      id: 2,
      poster: "Larry",
-     options: [{display: 'Pasta Primavera', id: 1}, {display: 'Salmon', id: 2}],
+     options: [{display: 'Pasta Primavera', id: 1, score: 0}, {display: 'Salmon', id: 2, score: 0}],
      voters: [
        { name: 'Larry', vote: 1 },
        { name: 'John' , vote: 1 },
      ]
+     //votes: []
    }
  ]
 }
 
 
-
 var id = {
   id: function() {
-    return Math.floor(Math.random() * 10)
+    return Math.floor(Math.random() * 100)
   }
 }
+
 
 // Get a list of all current meals.
 mealVotes.get('/', function(req, res) {
@@ -51,14 +53,16 @@ mealVotes.get('/', function(req, res) {
 // Add a new meal to vote on.
 mealVotes.post('/', function(req, res) {
  var theMeal = {};
+ theMeal.id = 0
  theMeal.id = id.id()
  theMeal.poster = req.body.poster
  theMeal.options = [];
- theMeal.options.push({display: req.body.dishes[0], id: 1})
- theMeal.options.push({display: req.body.dishes[1], id: 2})
- theMeal.options.push({display: req.body.dishes[2], id: 3})
+ var theDishes = req.body.dishes;
+ theDishes.forEach(function(dish) {
+   console.log(dish)
+   theMeal.options.push({display: dish, id: id.id(), score: 0})
+ })
  theMeal.voters = [];
- theMeal.voters.push(req.body.voters);
  meals.data.push(theMeal);
 
  res.send(meals);
@@ -67,34 +71,46 @@ mealVotes.post('/', function(req, res) {
 // Vote on an existing meal.
 mealVotes.put('/vote/:id/:option/:name', function(req, res) {
   var vote = {}
+  var name = req.params.name;
   meals.data.forEach(function(meal) {
     if(meal.id == req.params.id) {
-      var name = req.params.name;
-
         meal.options.forEach(function(items){
           if(req.params.option == items.display) {
-            meal.voters.forEach(function(voter) {
-              vote.id = items.id
-            });
-            meal.voters.push( { name: name, vote: vote.id });
+            vote.id = items.id
           }
-          console.log(items.display, items.id)
         });
+        meal.voters.push( { name: name, vote: vote.id } );
     }
   });
   res.send(meals)
 });
 
-
 mealVotes.get('/results/:poster', function(req, res) {
+  var results;
   meals.data.forEach(function(data) {
-    data.voters.forEach(function(vote) {
-      if(data.poster == req.params.poster) {
-        console.log(vote.vote)
-      }
-    });
+    data.options.forEach(function(meal) {
+      data.voters.forEach(function(vote) {
+        meal.score = 0;
+      });
+    })
+    data.options.forEach(function(meal) {
+      data.voters.forEach(function(vote) {
+        console.log(req.params.poster + 'Just Added')
+        console.log(data.poster)
+          results = data.options
+            if(vote.vote == meal.id) {
+              meal.score++
+              console.log(meal.display, meal.score)
+            }
+      });
+      console.log(meal.display, meal.score)
+    })
   });
-  res.send()
+  console.log(results)
+  console.log(meals)
+  res.send(meals)
 });
+
+
 
 module.exports = mealVotes;

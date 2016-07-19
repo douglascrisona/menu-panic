@@ -47,6 +47,7 @@ function verifyUser(response) {
     switchClass(theSearch, 'hide', 'view')
     userName.name = response;
     viewVotes();
+    viewMeals();
   }
 }
 
@@ -64,6 +65,12 @@ function viewVotes() {
   document.getElementById('header').appendChild(welcomeMessage)
 }
 
+function viewMeals() {
+  var viewMeals = document.createElement('div');
+  viewMeals.textContent = 'My Meals';
+  viewMeals.setAttribute('id', 'view-meals');
+  document.getElementById('header').appendChild(viewMeals)
+}
 
 var button = document.getElementById('search-button');
 button.addEventListener('click', function(e) {
@@ -221,7 +228,7 @@ theArea.addEventListener('click', function(e) {
         voteArea.appendChild(posterName(details.poster))
 
         details.options.forEach(function(dishes) {
-          voteArea.appendChild(dishOptions(dishes, details.id))
+          voteArea.appendChild(dishOptions(dishes.display, details.id))
         });
       });
     };
@@ -246,11 +253,13 @@ function dishOptions(data, id) {
   //dishes.setAttribute('value', id)
 
   var voteSelector = document.createElement('input');
+  voteSelector.setAttribute('class', 'vote-radio')
   voteSelector.setAttribute('type', 'radio');
   //voteSelector.setAttribute('id', 'the-vote');
-  voteSelector.setAttribute('id', data)
-  voteSelector.setAttribute('value', id)
+  voteSelector.setAttribute('id', data);
+  voteSelector.setAttribute('value', id);
   voteSelector.setAttribute('name', 'vote');
+
 
   var dishBox = document.createElement('div');
   dishBox.setAttribute('class', 'list-group-item');
@@ -261,6 +270,7 @@ function dishOptions(data, id) {
 
   return dishBox;
 }
+
 
 var voteRadio = document.getElementsByClassName('view-vote')[0];
 voteRadio.addEventListener('click', function(e) {
@@ -273,10 +283,71 @@ voteRadio.addEventListener('click', function(e) {
     xhr.open('PUT', '/mealVotes/vote/' + theItem.id + '/' + theItem.option + '/' + theItem.name);
     xhr.send();
 
+    xhr.onload = function() {
+      console.log(JSON.parse(xhr.responseText))
+    }
+
   }
 })
 
+//var voteRadio = document.getElementsByClassName('view-vote')[0];
+var myMeals;
+document.getElementById('header').addEventListener('click', function(e) {
+  var results = document.createElement('div');
+  results.setAttribute('class', 'panel panel-default')
+  var theResults = document.getElementsByClassName('view')[0]
+  var meals = document.getElementsByClassName('view-vote')[0]
+  var theMeal = e.target;
+  var name = userName.name
+  if(theMeal.id == 'view-meals') {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/mealVotes/results/' + name);
+    console.log(name)
+    xhr.send();
 
+    xhr.onload = function() {
+
+      myMeals = JSON.parse(xhr.responseText);
+      myMeals.data.forEach(function(person) {
+        console.log(person.poster + 'poster')
+        if(person.poster == name) {
+          console.log(person.options)
+        }
+      })
+      console.log(myMeals)
+      myMeals.forEach(function(meal) {
+        results.appendChild(displayDish(meal.display))
+        results.appendChild(displayDishScore(meal.score))
+        document.body.appendChild(results)
+        //document.body.appendChild(displayDish(meal.display))
+        //document.body.appendChild(displayDishScore(meal.score))
+      })
+      switchClass(theResults, 'view', 'hide')
+      switchClass(meals, 'view-vote', 'hide')
+    }
+  }
+});
+
+//function voteResults() {
+
+//}
+
+
+function displayDish(name) {
+  var dishName = document.createElement('div');
+  dishName.setAttribute('class', 'panel-body')
+  dishName.textContent = name;
+
+  return dishName
+}
+
+function displayDishScore(score) {
+  var dishScore = document.createElement('div');
+  dishScore.setAttribute('class', 'panel-body')
+  dishScore.textContent = 'Score: ' + score;
+
+  return dishScore
+}
 
 function voteMatch(value, item) {
   theItem = {};

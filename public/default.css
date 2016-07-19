@@ -103,9 +103,30 @@ body {
   border-color: gray;
 }
 
+#view-meals {
+/*  color: #36454f; */
+  color: white;
+  font-weight: bold;
+  margin-left: 70%;
+  margin-top: -34px;
+  border: 2px solid white;
+  border-radius: 5px;
+  width: 110px;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-left: 20px;
+}
+
+#view-meals:hover {
+  color: gray;
+  border-color: gray;
+}
+
+
 #welcome-message {
   float: right;
-  margin-right: 290px;
+  margin-right: 390px;
   margin-top: -25px;
   color: white;
   font-size: 20px;
@@ -149,4 +170,8 @@ height: 20px;
 
 #dish-options {
   text-align: center;
+}
+
+.vote-radio {
+  margin-left: 50%;
 }
