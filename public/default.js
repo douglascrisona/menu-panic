@@ -295,10 +295,12 @@ var myMeals;
 document.getElementById('header').addEventListener('click', function(e) {
   var results = document.createElement('div');
   results.setAttribute('class', 'panel panel-default')
+  results.setAttribute('id', 'score-box')
   var theResults = document.getElementsByClassName('view')[0]
   var meals = document.getElementsByClassName('view-vote')[0]
   var theMeal = e.target;
   var name = userName.name
+  
   if(theMeal.id == 'view-meals') {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/mealVotes/results/' + name);
@@ -309,34 +311,31 @@ document.getElementById('header').addEventListener('click', function(e) {
 
       myMeals = JSON.parse(xhr.responseText);
       myMeals.data.forEach(function(person) {
-        console.log(person.poster + 'poster')
+        //console.log(person.poster + 'poster')
         if(person.poster == name) {
-          console.log(person.options)
+          //console.log(person.options)
+          person.options.forEach(function(data) {
+            console.log(data.display, data.score)
+            results.appendChild(displayDish(data.display))
+            results.appendChild(displayDishScore(data.score))
+            document.body.appendChild(results)
+
+          })
         }
       })
       console.log(myMeals)
-      myMeals.forEach(function(meal) {
-        results.appendChild(displayDish(meal.display))
-        results.appendChild(displayDishScore(meal.score))
-        document.body.appendChild(results)
-        //document.body.appendChild(displayDish(meal.display))
-        //document.body.appendChild(displayDishScore(meal.score))
-      })
       switchClass(theResults, 'view', 'hide')
       switchClass(meals, 'view-vote', 'hide')
     }
   }
 });
 
-//function voteResults() {
-
-//}
-
 
 function displayDish(name) {
   var dishName = document.createElement('div');
   dishName.setAttribute('class', 'panel-body')
   dishName.textContent = name;
+  dishName.setAttribute('id', 'dish-name')
 
   return dishName
 }
@@ -345,6 +344,7 @@ function displayDishScore(score) {
   var dishScore = document.createElement('div');
   dishScore.setAttribute('class', 'panel-body')
   dishScore.textContent = 'Score: ' + score;
+  dishScore.setAttribute('id', 'dish-score')
 
   return dishScore
 }
@@ -354,6 +354,7 @@ function voteMatch(value, item) {
   theItem.id = value;
   theItem.option = item;
   theItem.name = userName.name
+
   return theItem;
 }
 
@@ -361,5 +362,6 @@ function loginCheck(username, password) {
   userCreds = {};
   userCreds.name = username;
   userCreds.password = password;
+
   return userCreds;
 }

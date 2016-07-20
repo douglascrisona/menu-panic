@@ -175,3 +175,21 @@ height: 20px;
 .vote-radio {
   margin-left: 50%;
 }
+
+#score-box {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+#dish-name {
+  font-size: 40px;
+  margin-left: 25%;
+  font-weight: bold;
+  margin-bottom: -30px;
+}
+
+
+#dish-score {
+  font-size: 30px;
+  color: gray;
+  margin-left: 25%;
+}
