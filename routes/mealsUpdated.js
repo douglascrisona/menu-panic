@@ -3,9 +3,11 @@ var profiles = require('../profiles.js')
 var mealVotes = express.Router();
 var cookieParser = require('cookie-parser')();
 var jsonParser = require('body-parser').json();
-var trackingId = require('../trackingId.js')
+var trackingId = require('../trackingId.js');
 var userSessions = require('../user-sessions.js');
+var client = require('twilio')('ACade02b2b721da17f3c9f02b627d3e3a4', '06af81eed7d85f7a60f59f18f6bacc11');
 
+mealVotes.use(jsonParser)
 
 var meals = {
  data: [
@@ -57,11 +59,31 @@ mealVotes.post('/', function(req, res) {
    theMeal.options.push({display: dish, id: id.id(), score: 0})
  })
  theMeal.voters = [];
-
  meals.data.push(theMeal);
 
+ profiles.forEach(function(user) {
+   if(req.body.poster == user.name) {
+     user.friends.forEach(function(number) {
+       sendText(number.number, req.body.poster, number.name)
+     })
+   }
+ })
  res.send(meals);
 });
+
+function sendText(number, person, user) {
+  client.sendMessage({
+      to: number,
+      from: '+15163070984',
+      body: 'Hi ' + user + ', ' + person + ' has some serious menu panic and needs your help!  Login to menu-panic.heroku.com and help them out.'
+  }, function(err, responseData) {
+      if (!err) {
+          console.log(responseData.from);
+          console.log(responseData.body);
+      }
+      console.log('MESSAGE SENT')
+  });
+}
 
 // Vote on an existing meal.
 mealVotes.put('/vote/:id/:option/:name', function(req, res) {
@@ -71,7 +93,8 @@ meals.data.forEach(function(meal) {
     meal.voters.forEach(function(voter) {
       if (voter.name == req.params.name) {
         voted = true;
-        console.log('This person voted already')
+        res.send('You voted already')
+        //console.log('This person voted already')
       }
     });
   }
