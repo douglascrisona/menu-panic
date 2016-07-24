@@ -53,16 +53,11 @@ function verifyUser(response) {
 
 
 function viewVotes() {
-  var welcomeMessage = document.createElement('div');
-  welcomeMessage.textContent = 'Welcome, ' + userName.name
-  welcomeMessage.setAttribute('id', 'welcome-message')
-
   var viewVotes = document.createElement('div');
   viewVotes.textContent = 'Pending Votes'
   viewVotes.setAttribute('id', 'view-votes')
 
   document.getElementById('header').appendChild(viewVotes)
-  document.getElementById('header').appendChild(welcomeMessage)
 }
 
 function viewMeals() {
@@ -223,6 +218,7 @@ theArea.addEventListener('click', function(e) {
     xhr.send()
 
     xhr.onload = function() {
+      var theButton
       pendingVotes = JSON.parse(xhr.responseText)
       pendingVotes.data.forEach(function(details) {
         voteArea.appendChild(posterName(details.poster))
@@ -230,6 +226,7 @@ theArea.addEventListener('click', function(e) {
         details.options.forEach(function(dishes) {
           voteArea.appendChild(dishOptions(dishes.display, details.id))
         });
+        voteArea.appendChild(voteButton())
       });
     };
     switchClass(theNewArea, 'hide', 'votes')
@@ -243,6 +240,14 @@ function posterName(data) {
   posterName.setAttribute('id','poster-name');
   posterName.setAttribute('class', 'h3')
   return posterName;
+}
+
+function voteButton() {
+  var voteButton = document.createElement('button');
+  voteButton.textContent = 'Vote'
+  voteButton.setAttribute('class', 'btn btn-default')
+  voteButton.setAttribute('id', 'cast-vote')
+  return voteButton
 }
 
 function dishOptions(data, id) {
@@ -271,26 +276,28 @@ function dishOptions(data, id) {
   return dishBox;
 }
 
-
+var voteChoice;
 var voteRadio = document.getElementsByClassName('view-vote')[0];
 voteRadio.addEventListener('click', function(e) {
   var theVote = e.target;
   if(theVote.name == 'vote') {
     voteMatch(theVote.value, theVote.id)
     console.log(theItem)
-
-    var xhr = new XMLHttpRequest();
-    xhr.open('PUT', '/mealVotes/vote/' + theItem.id + '/' + theItem.option + '/' + theItem.name);
-    xhr.send();
-
-    xhr.onload = function() {
-      console.log(JSON.parse(xhr.responseText))
-    }
-
+    voteChoice = theItem
   }
 })
 
-//var voteRadio = document.getElementsByClassName('view-vote')[0];
+var votePage = document.getElementsByClassName('view-vote')[0];
+votePage.addEventListener('click', function(e) {
+  var submitVote = e.target;
+  if(submitVote.id == 'cast-vote') {
+    var xhr = new XMLHttpRequest();
+    xhr.open('PUT', '/mealVotes/vote/' + voteChoice.id + '/' + voteChoice.option + '/' + voteChoice.name);
+    xhr.send();
+  }
+});
+
+
 var myMeals;
 document.getElementById('header').addEventListener('click', function(e) {
   var results = document.createElement('div');
@@ -300,7 +307,7 @@ document.getElementById('header').addEventListener('click', function(e) {
   var meals = document.getElementsByClassName('view-vote')[0]
   var theMeal = e.target;
   var name = userName.name
-  
+
   if(theMeal.id == 'view-meals') {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/mealVotes/results/' + name);
@@ -311,9 +318,7 @@ document.getElementById('header').addEventListener('click', function(e) {
 
       myMeals = JSON.parse(xhr.responseText);
       myMeals.data.forEach(function(person) {
-        //console.log(person.poster + 'poster')
         if(person.poster == name) {
-          //console.log(person.options)
           person.options.forEach(function(data) {
             console.log(data.display, data.score)
             results.appendChild(displayDish(data.display))
