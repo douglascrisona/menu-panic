@@ -90,8 +90,10 @@ body {
 /*  color: #36454f; */
   color: white;
   font-weight: bold;
-  margin-left: 80%;
-  margin-top: -40px;
+  float: right;
+  margin-right: 160px;
+  /*margin-left: 80%;*/
+  margin-top: -39px;
   border: 2px solid white;
   border-radius: 5px;
   width: 110px;
@@ -107,8 +109,10 @@ body {
 /*  color: #36454f; */
   color: white;
   font-weight: bold;
-  margin-left: 70%;
-  margin-top: -34px;
+  float: right;
+  /*margin-left: 70%;*/
+  margin-right: 290px;
+  margin-top: -39px;
   border: 2px solid white;
   border-radius: 5px;
   width: 110px;
