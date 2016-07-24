@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser')();
 var jsonParser = require('body-parser').json();
 var trackingId = require('../trackingId.js');
 var userSessions = require('../user-sessions.js');
-var client = require('twilio')('ACade02b2b721da17f3c9f02b627d3e3a4', '06af81eed7d85f7a60f59f18f6bacc11');
+var notify = require('../notification.js')
 
 mealVotes.use(jsonParser)
 
@@ -34,6 +34,7 @@ var meals = {
    }
  ]
 }
+
 
 var id = {
   id: function() {
@@ -64,26 +65,12 @@ mealVotes.post('/', function(req, res) {
  profiles.forEach(function(user) {
    if(req.body.poster == user.name) {
      user.friends.forEach(function(number) {
-       sendText(number.number, req.body.poster, number.name)
+       notify.createMealText(number.number, req.body.poster, number.name)
      })
    }
  })
  res.send(meals);
 });
-
-function sendText(number, person, user) {
-  client.sendMessage({
-      to: number,
-      from: '+15163070984',
-      body: 'Hi ' + user + ', ' + person + ' has some serious menu panic and needs your help!  Login to menu-panic.heroku.com and help them out.'
-  }, function(err, responseData) {
-      if (!err) {
-          console.log(responseData.from);
-          console.log(responseData.body);
-      }
-      console.log('MESSAGE SENT')
-  });
-}
 
 // Vote on an existing meal.
 mealVotes.put('/vote/:id/:option/:name', function(req, res) {
@@ -94,7 +81,6 @@ meals.data.forEach(function(meal) {
       if (voter.name == req.params.name) {
         voted = true;
         res.send('You voted already')
-        //console.log('This person voted already')
       }
     });
   }
@@ -108,6 +94,11 @@ if(!voted) {
         meal.options.forEach(function(items){
           if(req.params.option == items.display) {
             vote.id = items.id
+            profiles.forEach(function(user) {
+              if(user.name == meal.poster) {
+                notify.voteText(user.phone, meal.poster, name, items.display)
+              }
+            })
           }
         });
         meal.voters.push( { name: name, vote: vote.id } );
@@ -132,7 +123,6 @@ mealVotes.get('/results/:poster', function(req, res) {
           results = data.options
             if(vote.vote == meal.id) {
               meal.score++
-              console.log(meal.display, meal.score)
             }
       });
       console.log(meal.display, meal.score)
