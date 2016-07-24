@@ -4,9 +4,8 @@ var mealVotes = express.Router();
 var cookieParser = require('cookie-parser')();
 var jsonParser = require('body-parser').json();
 var trackingId = require('../trackingId.js')
-var userSessions = require('../user-sessions.js')
+var userSessions = require('../user-sessions.js');
 
-mealVotes.use(jsonParser)
 
 var meals = {
  data: [
@@ -21,7 +20,6 @@ var meals = {
        { name: 'Abe', vote: 1 },
        { name: 'John' , vote: 1 },
      ]
-     //votes: []
    },
    {
      id: 2,
@@ -31,11 +29,9 @@ var meals = {
        { name: 'Larry', vote: 1 },
        { name: 'John' , vote: 1 },
      ]
-     //votes: []
    }
  ]
 }
-
 
 var id = {
   id: function() {
@@ -43,11 +39,9 @@ var id = {
   }
 }
 
-
 // Get a list of all current meals.
 mealVotes.get('/', function(req, res) {
  res.send(meals);
- //console.log(meals)
 });
 
 // Add a new meal to vote on.
@@ -63,6 +57,7 @@ mealVotes.post('/', function(req, res) {
    theMeal.options.push({display: dish, id: id.id(), score: 0})
  })
  theMeal.voters = [];
+
  meals.data.push(theMeal);
 
  res.send(meals);
@@ -70,6 +65,19 @@ mealVotes.post('/', function(req, res) {
 
 // Vote on an existing meal.
 mealVotes.put('/vote/:id/:option/:name', function(req, res) {
+var voted = false;
+meals.data.forEach(function(meal) {
+  if (meal.id == req.params.id) {
+    meal.voters.forEach(function(voter) {
+      if (voter.name == req.params.name) {
+        voted = true;
+        console.log('This person voted already')
+      }
+    });
+  }
+});
+
+if(!voted) {
   var vote = {}
   var name = req.params.name;
   meals.data.forEach(function(meal) {
@@ -83,6 +91,7 @@ mealVotes.put('/vote/:id/:option/:name', function(req, res) {
     }
   });
   res.send(meals)
+}
 });
 
 mealVotes.get('/results/:poster', function(req, res) {
