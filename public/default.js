@@ -294,6 +294,10 @@ votePage.addEventListener('click', function(e) {
     var xhr = new XMLHttpRequest();
     xhr.open('PUT', '/mealVotes/vote/' + voteChoice.id + '/' + voteChoice.option + '/' + voteChoice.name);
     xhr.send();
+
+    xhr.onload = function() {
+      console.log(xhr.responseText)
+    }
   }
 });
 
@@ -315,19 +319,17 @@ document.getElementById('header').addEventListener('click', function(e) {
     xhr.send();
 
     xhr.onload = function() {
-
+      var display = document.createElement('div');
+      display.setAttribute('class', 'panel panel-default');
       myMeals = JSON.parse(xhr.responseText);
       myMeals.data.forEach(function(person) {
         if(person.poster == name) {
+          document.body.appendChild(buffer())
           person.options.forEach(function(data) {
-            console.log(data.display, data.score)
-            results.appendChild(displayDish(data.display))
-            results.appendChild(displayDishScore(data.score))
-            document.body.appendChild(results)
-
-          })
-        }
-      })
+            document.body.appendChild(dishResultBox(data.display, data.score))
+          });
+        };
+      });
       console.log(myMeals)
       switchClass(theResults, 'view', 'hide')
       switchClass(meals, 'view-vote', 'hide')
@@ -335,23 +337,31 @@ document.getElementById('header').addEventListener('click', function(e) {
   }
 });
 
+function buffer() {
+  var display = document.createElement('div');
+  display.setAttribute('id', 'buffer')
 
-function displayDish(name) {
+  return display
+}
+
+function dishResultBox(name, score) {
   var dishName = document.createElement('div');
   dishName.setAttribute('class', 'panel-body')
   dishName.textContent = name;
   dishName.setAttribute('id', 'dish-name')
 
-  return dishName
-}
-
-function displayDishScore(score) {
   var dishScore = document.createElement('div');
   dishScore.setAttribute('class', 'panel-body')
   dishScore.textContent = 'Score: ' + score;
   dishScore.setAttribute('id', 'dish-score')
 
-  return dishScore
+  var theDisplay = document.createElement('div');
+  theDisplay.setAttribute('class', 'panel panel-body')
+  theDisplay.setAttribute('id', 'the-new-display')
+  theDisplay.appendChild(dishName)
+  theDisplay.appendChild(dishScore)
+
+  return theDisplay
 }
 
 function voteMatch(value, item) {

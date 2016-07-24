@@ -151,8 +151,8 @@ body {
 }
 
 #test-box {
-border: 1px solid black;
-height: 20px;
+  border: 1px solid black;
+  height: 20px;
 
 }
 
@@ -201,4 +201,15 @@ height: 20px;
 #cast-vote {
   margin-left: 30%;
   margin-top: 15px;
+}
+
+#the-new-display {
+  margin-top: -30px;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+#buffer{
+  margin-bottom: 60px;
+
 }
