@@ -43,4 +43,4 @@ Menu Panic Vote Results Page
 <br>
 Text Notifications
 <img src="http://i.imgur.com/tQ4ldzE.jpg">
-<img scr="http://i.imgur.com/oCkFOLV.jpg">
+<img src="http://i.imgur.com/oCkFOLV.jpg">
